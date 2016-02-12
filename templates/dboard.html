@@ -23,47 +23,53 @@
                       
 
                       <div class="form-group">
-                        Address
+                        Where Are Ü Now?
                         <br>
                         <div class="col-sm-10">
 
-                          <input type="text" class="form-control" id="address" name="address" placeholder="120 Sutter Street, San Francisco, CA">
+                          <input type="text" class="form-control" id="address" name="address" placeholder="683 Sutter St, San Francisco, CA 94109">
 
                         </div>
                       </div>
 
                       <div class="form-group">
-                        How far from your address for activity in meters
+                        How far are you willing to go?
                         <br>
                         <div class="radio">
-                          <label><input type="radio" name='radius' value="2">2 miles</label>
+                          <label><input type="radio" name='radius' value="5">5 miles</label>
                         </div>
                         <div class="radio">
-                          <label><input type="radio" name='radius' value="3">3 miles</label>
+                          <label><input type="radio" name='radius' value="10">10 miles</label>
                         </div>
                         <div class="radio">
-                          <label><input type="radio" name='radius' value="4">4 miles</label>
+                          <label><input type="radio" name='radius' value="15">15 miles</label>
                         </div>
                       </div>
 
                       <div class="form-group">
-                        Phone Number
+                        What's your phone number?
                         <div class="col-sm-10">
-                          <input type="text" class="form-control" id="phone-number" name='phone-number' placeholder="888-888-8888">
+                          <input type="text" class="form-control" id="phone-number" name='phone-number' placeholder="415-888-8888">
                         </div>
                       </div>
 
                       <div class="form-group">
-                        Activity
+                        What do you fancy doing?
                         <br>
                         <div class="radio">
-                          <label><input type="radio" name="activity" value="food">Food</label>
+                          <label><input type="radio" name="activity" value="group">I want to have fun with my buddies!</label>
                         </div>
                         <div class="radio">
-                          <label><input type="radio" name="activity" value="fitness">Fitness</label>
+                          <label><input type="radio" name="activity" value="fitness">I want to break a sweat!</label>
                         </div>
                         <div class="radio">
-                          <label><input type="radio" name="activity" value="entertainment">Entertainment</label>
+                          <label><input type="radio" name="activity" value="relax">I want to relax and restore.</label>
+                        </div>
+                        <div class="radio">
+                          <label><input type="radio" name="activity" value="night">I want to have a fun night out!</label>
+                        </div>
+                        <div class="radio">
+                          <label><input type="radio" name="activity" value="food">I am hungry! Feed me!</label>
                         </div>
                       </div>
 
@@ -78,48 +84,6 @@
             <div id="showUserInfo"></div>
 
         </div>
-
-      <script type="text/javascript">
-
-        // function showSearchResult(results) {
-
-        //   $('#showUserInfo').append(results.img);
-        //   $('#showUserInfo').append(results.review);
-        //   $('#showUserInfo').append(results.rating);
-        //   $('#showUserInfo').append(results.rating_img);
-
-        // }
-
-        // function showAllChoices(evt) {
-
-        //   evt.preventDefault();
-
-        //   var address = $("#address").val();
-        //   var radius = $('input:radio[name=radius]:checked').val();
-        //   var phonenumber = $("#phone-number").val();
-        //   var activity = $('input:radio[name=activity]:checked').val();
-
-        //   formInput = {
-        //     address: address,
-        //     radius: radius,
-        //     phonenumber: phonenumber,
-        //     activity: activity
-        //   }
-
-        //   console.log(address);
-        //   console.log(radius);
-        //   console.log(phonenumber);
-        //   console.log(activity);
-
-        //   // $("#showUserInfo").html("Address:" + address + "Phone Number:"
-        //   //                         + phonenumber + "Activity:" + activity)
-        
-        //   $.post('/generateYelp.json', formInput, showSearchResult)
-        // }
-
-        // $("#submit-activity").on('click', showAllChoices)
-
-      </script>
 
     </body>
 </html>
