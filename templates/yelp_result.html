@@ -1,3 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>A simple map</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js'></script>
+<link href='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css' rel='stylesheet' />
+<style>
+  body { margin:0; padding:0; }
+  #map { position:absolute; top:0; bottom:0; width:100%; }
+  .marker {}
+</style>
+</head>
+<body>
+<div id='map'></div>
+
+<script type = 'text/javascript'>
+
+console.log({{start_lat}}, {{start_lng}});
+console.log({{end_lat}}, {{end_lng}});
+
+var mapboxAccessToken = 'pk.eyJ1Ijoic2hpamllIiwiYSI6ImNpa2tmNnRmaDBiNWZ1ZG02NzJ1dDVvbG0ifQ.IvsMRqi-NR3n4wQC3d9TMQ';
+var mapboxMapID = 'shijie.28a6ac8e'
+
+L.mapbox.accessToken = mapboxAccessToken;
+var map = L.mapbox.map('map', mapboxMapID)
+    .setView([{{start_lat}}, {{start_lng}}], 9);
+
+
+var myLayer = L.mapbox.featureLayer().addTo(map);
+
+
+var geojson = {
+    type: 'FeatureCollection',
+    features: [{
+        type: 'Feature',
+        properties: {
+            title: 'My current location',
+            'marker-color': '#f86767',
+            'marker-size': 'large',
+            'marker-symbol': 'star',
+        },
+        geometry: {
+            type: 'Point',
+            coordinates: [{{start_lng}}, {{start_lat}}]
+        }
+    },
+    {
+        type: 'Feature',
+        properties: {
+            title: 'Destination Unknown',
+            'marker-color': '#7ec9b1',
+            'marker-size': 'large',
+            'marker-symbol': 'star',
+        },
+        geometry: {
+            type: 'Point',
+            coordinates: [{{end_lng}}, {{end_lat}}]
+        }
+    }]
+};
+
+myLayer.setGeoJSON(geojson);
+myLayer.on('mouseover', function(e) {
+    e.layer.openPopup();
+});
+myLayer.on('mouseout', function(e) {
+    e.layer.closePopup();
+});
+
+</script>
+</body>
+</html>
+
+
+
+
+<!-- 
 <html>
 <head>
         <meta charset="utf-8">
@@ -12,9 +91,11 @@
     <p>Biz Rating: {{biz.rating}} </p>
     <p>Biz Rating: <img src="{{biz.rating_img_url_large}}"></p>
     <p>Biz Picture: <img src="{{biz.image_url}}"><p>
+    <p>Biz categories: {{biz.categories}}<p>
     <p>Mystery biz: {{biz.name}}</p>
+    <p>Location: {{biz.location.coordinate.latitude}}, {{biz.location.coordinate.longitude}}</p>
     <form action='/request_uber' method='POST'>
-        <button id='uber' type='submit' value='Click for Uber!'></button>
+        <input id='uber' type='submit' value='Click for Uber!'></input>
     </form>
 
 
@@ -22,4 +103,4 @@
 
     </script>
 </body>
-</html>
+</html> -->
