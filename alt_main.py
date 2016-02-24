@@ -5,6 +5,10 @@ from flask import session as sesh
 from flask import redirect
 from flask import request, url_for
 from flask import render_template
+from flask import flash, jsonify
+
+from jinja2 import StrictUndefined
+from flask_debugtoolbar import DebugToolbarExtension
 
 from uber_rides.session import Session
 from uber_rides.client import UberRidesClient
@@ -17,11 +21,13 @@ from utils import import_oauth2_credentials
 
 from yelp_api import yelp_random_pick
 from geopy.geocoders import Nominatim
+from geopy.distance import vincenty
+from model import connect_to_db, db, User, Search, Rating
 
 import requests
-import httplib
 import os
 
+import httplib
 import urllib
 import urllib2
 
@@ -36,6 +42,10 @@ app.requests_session = requests.Session()
 app.secret_key = os.urandom(24)
 
 geolocator = Nominatim()
+
+# Normally, if you use an undefined variable in Jinja2, it fails silently.
+# This is horrible. Fix this so that, instead, it raises an error.
+app.jinja_env.undefined = StrictUndefined
 
 # import app credentials imported from the configuration file.
 credentials = import_app_credentials()
@@ -132,6 +142,18 @@ def dashboard():
 
         print sesh['user']
 
+        if db.session.query(User).filter(User.email == user_profile['email']).count() == 0:
+            user = User(first_name=user_profile.get('first_name'),
+                        last_name= user_profile.get('last_name'),
+                        img_url=user_profile.get('picture'),
+                        email=user_profile.get('email'))
+            db.session.add(user)
+            db.session.commit()
+        else:
+            first_name = User.query.filter(User.email == user_profile['email']).first().first_name
+            print "Hello!", first_name
+
+
         return render_template('dboard.html', 
                                 first_name=sesh['user'].get('first_name'),
                                 img_url=sesh['user'].get('img_url'),
@@ -160,15 +182,43 @@ def generateYelp():
     end_lat = biz.location.coordinate.latitude
     end_lng = biz.location.coordinate.longitude
 
+    distance = vincenty((start_lat, start_lng), (end_lat, end_lng)).miles
+
+    sesh['user']['phone'] = phone
+    user = User.query.filter(User.email == sesh['user'].get('email')).first()
+    user_id = user.id
+    if user.phone == None:
+        user.phone = phone
+        db.session.commit()
+
+    search = Search(user_id=user_id,
+                mood=mood,
+                adjective=adjective,
+                alter_ego=alter_ego,
+                event=event,
+                location=location,
+                start_lat=start_lat,
+                start_lng=start_lng,
+                destination=biz.name,
+                end_lat=end_lat,
+                end_lng=end_lng,
+                mileage=distance,
+                )
+    db.session.add(search)
+    db.session.commit()
+
     print ("yelp stuff:", mood, adjective, alter_ego, location, start, start_lat, start_lng,
-          event, city, phone)
-
+          event, city, phone, biz.categories)
     print ('end stuff:', end_lat, end_lng)
-
     # if refresh page on yelp search, access_token is lost
     print "access_token222", sesh.get('access_token')
+    print sesh['user']
 
     return render_template('yelp_result.html', biz=biz,
+                                               review=biz.snippet_text.replace('\n', ' '),
+                                               pic = sesh['user'].get('img_url'),
+                                               first_name=sesh['user'].get('first_name'),
+                                               location=location,
                                                start_lat=start_lat,
                                                start_lng=start_lng,
                                                end_lat=end_lat,
@@ -189,6 +239,10 @@ def demo():
 @app.route('/request_uber', methods=['POST'])
 def request_uber():
     """ """
+
+    search = Search.query.order_by(Search.date.desc()).first()
+    search.uber_request = True
+    db.session.commit()
 
     credentials2 = import_oauth2_credentials()
     
@@ -240,5 +294,15 @@ if __name__ == "__main__":
     
     # credentials = import_app_credentials()
 
-    app.run(debug = True)
+    app.debug = True
+
+    connect_to_db(app)
+
+    # Use the DebugToolbar
+    # DebugToolbarExtension(app)
+
+    db.create_all()
+    db.session.commit()
+
+    app.run()
 

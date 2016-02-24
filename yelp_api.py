@@ -12,22 +12,23 @@ with io.open('config_secret.json') as cred:
     yelp_client = Client(auth)
 
 group_activity = ['arcades', 'amusementparks', 'lasertag', 'rock_climbing', 'gokarts',
-                  'escapegames', 'mini_golf', 'trampoline', 'zoos', 'bowling']
+                  'escapegames', 'mini_golf', 'trampoline', 'zoos', 'bowling', 'galleries']
 
 fitness_activity = ['yoga', 'pilates', 'hiking', 'cyclingclasses']
 
 relax_activity = ['spas', 'hair', 'skincare', 'othersalons', 'massage',
                   'outlet_stores', 'shoppingcenters', 'massage_therapy',
-                  'acupuncture', 'ayurveda', 'chiropractors', 'galleries', 
-                  'gardens', 'museums', 'paintandsip', 'beaches']
+                  'acupuncture', 'ayurveda', 'chiropractors', 'venues', 'galleries', 
+                  'landmarks', 'gardens', 'museums', 'paintandsip', 'beaches']
 
-night_activity = ['cabaret', 'cinema', 'musicvenues', 'opera', 'theater',
+night_activity = ['cabaret', 'movietheaters', 'musicvenues', 'opera', 'theater',
                   'cocktailbars', 'lounges', 'sportsbars', 'wine_bar',
                   'poolhalls', 'pianobars', 'karaoke', 'jazzandblues',
                   'danceclubs']
 
-eat_activity = ['wineries', 'farmersmarket', 'bakeries', 'bubbletea', 'coffee',
-                'icecream', 'gourmet', 'juicebars', 'desserts', 'breweries']
+eat_activity = ['wineries', 'farmersmarket', 'cafes', 'bakeries', 'bubbletea', 'coffee',
+                'restaurants','beer_and_wine', 'icecream', 'gourmet', 'juicebars',
+                'asianfusion', 'japanese', 'seafood', 'breweries']
 
 def yelp_random_pick(event, city):
     """Generates top pick for users."""
@@ -38,7 +39,7 @@ def yelp_random_pick(event, city):
         category_filter = random.choice(group_activity)
     elif event == 'relax':
         category_filter = random.choice(relax_activity)
-    elif event == 'nightlight':
+    elif event == 'nightlife':
         category_filter = random.choice(night_activity)
     elif event == 'fitness':
         category_filter = random.choice(fitness_activity)

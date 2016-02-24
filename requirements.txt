@@ -1,4 +1,7 @@
+blinker==1.4
 Flask==0.10.1
+Flask-DebugToolbar==0.10.0
+Flask-SQLAlchemy==2.1
 geopy==1.11.0
 httplib2==0.9.2
 itsdangerous==0.24
@@ -6,10 +9,12 @@ Jinja2==2.8
 MarkupSafe==0.23
 oauth2==1.9.0.post1
 parsedatetime==1.5
+psycopg2==2.6.1
 PyYAML==3.11
 rauth==0.7.2
 requests==2.9.1
 six==1.10.0
+SQLAlchemy==1.0.12
 uber-rides==0.1.1
 Werkzeug==0.11.3
 wheel==0.24.0

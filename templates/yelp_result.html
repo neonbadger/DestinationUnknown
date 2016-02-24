@@ -1,74 +1,88 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset=utf-8 />
-<title>A simple map</title>
-<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-<script src='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.js'></script>
-<link href='https://api.mapbox.com/mapbox.js/v2.3.0/mapbox.css' rel='stylesheet' />
-<style>
-  body { margin:0; padding:0; }
-  #map { position:absolute; top:0; bottom:0; width:100%; }
-  .marker {}
-</style>
+  <meta charset=utf-8 />
+  <title></title>
+  <script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.css' rel='stylesheet' />
+  <link href='//mapbox.com/base/latest/base.css' rel='stylesheet' />
+  <style>
+    body { margin:0; padding:0; }
+    .map { position:absolute; top:0; bottom:0; width:100%; }
+  </style>
 </head>
 <body>
-<div id='map'></div>
+<div id='map-tooltips-js' class='map'> </div>
+<script src='https://code.jquery.com/jquery-1.11.0.min.js'></script>
+<script>
+L.mapbox.accessToken = 'pk.eyJ1Ijoic2hpamllIiwiYSI6ImNpa2tmNnRmaDBiNWZ1ZG02NzJ1dDVvbG0ifQ.IvsMRqi-NR3n4wQC3d9TMQ';
+var mapTooltipsJS = L.mapbox.map('map-tooltips-js', 'shijie.28a6ac8e')
+  .setView([{{start_lat}}, {{start_lng}}], 10);
+var myLayer = L.mapbox.featureLayer().addTo(mapTooltipsJS);
 
-<script type = 'text/javascript'>
-
-console.log({{start_lat}}, {{start_lng}});
-console.log({{end_lat}}, {{end_lng}});
-
-var mapboxAccessToken = 'pk.eyJ1Ijoic2hpamllIiwiYSI6ImNpa2tmNnRmaDBiNWZ1ZG02NzJ1dDVvbG0ifQ.IvsMRqi-NR3n4wQC3d9TMQ';
-var mapboxMapID = 'shijie.28a6ac8e'
-
-L.mapbox.accessToken = mapboxAccessToken;
-var map = L.mapbox.map('map', mapboxMapID)
-    .setView([{{start_lat}}, {{start_lng}}], 9);
-
-
-var myLayer = L.mapbox.featureLayer().addTo(map);
-
-
-var geojson = {
-    type: 'FeatureCollection',
-    features: [{
-        type: 'Feature',
-        properties: {
-            title: 'My current location',
-            'marker-color': '#f86767',
-            'marker-size': 'large',
-            'marker-symbol': 'star',
-        },
-        geometry: {
-            type: 'Point',
-            coordinates: [{{start_lng}}, {{start_lat}}]
-        }
+var geojson = [
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [{{start_lng}}, {{start_lat}}]
     },
-    {
-        type: 'Feature',
-        properties: {
-            title: 'Destination Unknown',
-            'marker-color': '#7ec9b1',
-            'marker-size': 'large',
-            'marker-symbol': 'star',
-        },
-        geometry: {
-            type: 'Point',
-            coordinates: [{{end_lng}}, {{end_lat}}]
-        }
-    }]
-};
+    "properties": {
+      "title": "{{first_name}}! Your journey starts here!",
+      "description": "{{location}}",
+      "icon": {
+          "iconUrl": "{{pic}}",
+          "iconSize": [80, 80], // size of the icon
+          "iconAnchor": [25, 25], // point of the icon which will correspond to marker's location
+          "popupAnchor": [0, -25], // point from which the popup should open relative to the iconAnchor
+          "className": "dot"
+      }
+    }
+  },
+  {
+    "type": "Feature",
+    "geometry": {
+      "type": "Point",
+      "coordinates": [{{end_lng}}, {{end_lat}}]
+    },
+    "properties": {
+      "title": "Destination Unknown",
+      "description": "<em> Review Highlight</em>: {{review}}",
+      "categories": "<em> Categories </em>: {% for category in biz.categories %} {{category['name']}} {% endfor %}",
+      "image": "{{biz.rating_img_url_large}}",
+      "icon": {
+          "iconUrl": "https://www.mapbox.com/mapbox.js/assets/images/astronaut1.png",
+          "iconSize": [80, 80], // size of the icon
+          "iconAnchor": [25, 25], // point of the icon which will correspond to marker's location
+          "popupAnchor": [0, -25], // point from which the popup should open relative to the iconAnchor
+          "className": "dot"
+      }
+    }
+  }
+];
 
+// Set a custom icon on each marker based on feature properties.
+myLayer.on('layeradd', function(e) {
+  var marker = e.layer,
+    feature = marker.feature;
+  marker.setIcon(L.icon(feature.properties.icon));
+  
+  var content;
+  
+  if (feature.properties.image) {
+    content = '<h2>'+ feature.properties.title+'<\/h2>' + 
+              '<img src="'+feature.properties.image +'" alt="">' + 
+              '<br><br><p>' + feature.properties.description + '</p>' +
+              '<p>' + feature.properties.categories + '</p>' +
+              "<br><form action='/request_uber' method='POST'><input id='uber' type='submit' class='button fill-orange' value='Sweep Away by Uber!'></input></form>" +
+              "<a href='/dashboard' class='button fill-green'>Search Again</a>";
+  } else {
+    content = '<h2>' + feature.properties.title+'<\/h2>' + '<p>' + feature.properties.description+'</p>';
+  }
+  marker.bindPopup(content);
+});
 myLayer.setGeoJSON(geojson);
-myLayer.on('mouseover', function(e) {
-    e.layer.openPopup();
-});
-myLayer.on('mouseout', function(e) {
-    e.layer.closePopup();
-});
-
+mapTooltipsJS.scrollWheelZoom.disable();
 </script>
 </body>
 </html>
