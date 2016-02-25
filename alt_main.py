@@ -263,21 +263,30 @@ def request_uber():
 
     uber_client = UberRidesClient(uber_session, sandbox_mode=True)
 
-    response = uber_client.get_products(37.77, -122.41)
+    # receive data from the Ajax call
+    start_lat = request.form.get('start_lat')
+    start_lng = request.form.get('start_lng')
+    end_lat = request.form.get('end_lat')
+    end_lng = request.form.get('end_lng')
+
+    print start_lat, start_lng, end_lat, end_lng
+
+    response = uber_client.get_products(start_lat, start_lng)
 
     products = response.json.get('products')
 
     product_id = products[0].get('product_id')
 
     print product_id
+    print "response", response.json
     print uber_client.get_user_profile().json
     print uber_client.get_user_activity().json
 
-    ride_request = uber_client.request_ride(product_id, 37.77, -122.41, 37.79, -122.41)
+    ride_request = uber_client.request_ride(product_id, start_lat, start_lng, end_lat, end_lng)
     
     ride_details = ride_request.json
 
-    print ride_details
+    print "ride details:", ride_details
     
     ride_id = ride_details.get('request_id')
 
@@ -287,7 +296,7 @@ def request_uber():
 
     print get_ride
 
-    return "success!"
+    return jsonify(products[0])
 
 
 if __name__ == "__main__":

@@ -13,6 +13,20 @@
 </head>
 <body>
 <div id='map-tooltips-js' class='map'> </div>
+<!-- modal content -->
+<div id='confirm'>
+      <div class='header'><span>Confirm</span></div>
+      <div class='message'></div>
+      <div class='buttons'>
+        <div class='no simplemodal-close'>No</div><div class='yes'>Yes</div>
+      </div>
+    </div>
+    <!-- preload the images -->
+    <div style='display:none'>
+      <img src='img/confirm/header.gif' alt='' />
+      <img src='img/confirm/button.gif' alt='' />
+    </div>
+</div>
 <script src='https://code.jquery.com/jquery-1.11.0.min.js'></script>
 <script>
 L.mapbox.accessToken = 'pk.eyJ1Ijoic2hpamllIiwiYSI6ImNpa2tmNnRmaDBiNWZ1ZG02NzJ1dDVvbG0ifQ.IvsMRqi-NR3n4wQC3d9TMQ';
@@ -74,7 +88,8 @@ myLayer.on('layeradd', function(e) {
               '<img src="'+feature.properties.image +'" alt="">' + 
               '<br><br><p>' + feature.properties.description + '</p>' +
               '<p>' + feature.properties.categories + '</p>' +
-              "<br><form action='/request_uber' method='POST'><input id='uber' type='submit' class='button fill-orange' value='Sweep Away by Uber!'></input></form>" +
+              // "<br><form action='/request_uber' id='uber' method='POST'><input type='submit' class='button fill-orange' value='Sweep Away by Uber!'></input></form>" +
+               "<br><button class='button fill-orange' id='trigger'>Get Uber!</button>" +
               "<a href='/dashboard' class='button fill-green'>Search Again</a>";
   } else {
     content = '<h2>' + feature.properties.title+'<\/h2>' + '<p>' + feature.properties.description+'</p>';
@@ -83,6 +98,27 @@ myLayer.on('layeradd', function(e) {
 });
 myLayer.setGeoJSON(geojson);
 mapTooltipsJS.scrollWheelZoom.disable();
+
+var params = {
+  'start_lat': {{start_lat}},
+  'start_lng': {{start_lng}},
+  'end_lat': {{end_lat}},
+  'end_lng': {{end_lng}}
+}
+
+function showUber(results) {
+  confirm("You are about to call this" + results['display_name'] + " product id: " results['product_id'] + ". Are you sure you want to proceed?");
+  $('#trigger').html("Uber called!");
+}
+
+function getUberJson() {
+  $.post('/request_uber', params, showUber)
+}
+
+$('#map-tooltips-js').on('click', '#trigger', getUberJson);
+
+
+
 </script>
 </body>
 </html>
