@@ -13,20 +13,6 @@
 </head>
 <body>
 <div id='map-tooltips-js' class='map'> </div>
-<!-- modal content -->
-<div id='confirm'>
-      <div class='header'><span>Confirm</span></div>
-      <div class='message'></div>
-      <div class='buttons'>
-        <div class='no simplemodal-close'>No</div><div class='yes'>Yes</div>
-      </div>
-    </div>
-    <!-- preload the images -->
-    <div style='display:none'>
-      <img src='img/confirm/header.gif' alt='' />
-      <img src='img/confirm/button.gif' alt='' />
-    </div>
-</div>
 <script src='https://code.jquery.com/jquery-1.11.0.min.js'></script>
 <script>
 L.mapbox.accessToken = 'pk.eyJ1Ijoic2hpamllIiwiYSI6ImNpa2tmNnRmaDBiNWZ1ZG02NzJ1dDVvbG0ifQ.IvsMRqi-NR3n4wQC3d9TMQ';
@@ -104,20 +90,18 @@ var params = {
   'start_lng': {{start_lng}},
   'end_lat': {{end_lat}},
   'end_lng': {{end_lng}}
-}
+};
 
 function showUber(results) {
-  confirm("You are about to call this" + results['display_name'] + " product id: " results['product_id'] + ". Are you sure you want to proceed?");
+  confirm("You are about to call this " + results['display_name'] + ", product id: " + results['product_id'] + ". Are you sure you want to proceed?");
   $('#trigger').html("Uber called!");
-}
+};
 
 function getUberJson() {
   $.post('/request_uber', params, showUber)
-}
+};
 
 $('#map-tooltips-js').on('click', '#trigger', getUberJson);
-
-
 
 </script>
 </body>
