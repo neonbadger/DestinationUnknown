@@ -63,7 +63,7 @@ auth_url = auth_flow.get_authorization_url()
 def index():
     """Show landing page."""
 
-    return render_template('index.html')
+    return render_template('index2.html')
 
 @app.route('/authenticate')
 def login():

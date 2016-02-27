@@ -5,15 +5,38 @@
   <title></title>
   <script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.js'></script>
   <link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.css' rel='stylesheet' />
-  <link href='//mapbox.com/base/latest/base.css' rel='stylesheet' />
+ <!--  <link href='//mapbox.com/base/latest/base.css' rel='stylesheet' /> -->
+  <script src='https://code.jquery.com/jquery-1.11.0.min.js'></script>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
   <style>
     body { margin:0; padding:0; }
     .map { position:absolute; top:0; bottom:0; width:100%; }
+    #myModal {z-index: 1000}
   </style>
 </head>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Sign this petition!</h4>
+      </div>
+      <div class="modal-body">
+        <p>Fields for the signatures here, take some from the facebook API</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Sign now!</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <body>
 <div id='map-tooltips-js' class='map'> </div>
-<script src='https://code.jquery.com/jquery-1.11.0.min.js'></script>
+
 <script>
 L.mapbox.accessToken = 'pk.eyJ1Ijoic2hpamllIiwiYSI6ImNpa2tmNnRmaDBiNWZ1ZG02NzJ1dDVvbG0ifQ.IvsMRqi-NR3n4wQC3d9TMQ';
 var mapTooltipsJS = L.mapbox.map('map-tooltips-js', 'shijie.28a6ac8e')
@@ -75,7 +98,8 @@ myLayer.on('layeradd', function(e) {
               '<br><br><p>' + feature.properties.description + '</p>' +
               '<p>' + feature.properties.categories + '</p>' +
               // "<br><form action='/request_uber' id='uber' method='POST'><input type='submit' class='button fill-orange' value='Sweep Away by Uber!'></input></form>" +
-               "<br><button class='button fill-orange' id='trigger'>Get Uber!</button>" +
+              "<a data-toggle='modal' href='#myModal' class='btn btn-lg btn-danger'>Sign!</a>" +
+               "<br><button type='button' class='button fill-orange' id='trigger' data-toggle='modal' data-target='.bs-example-modal-lg'>Get Uber!</button>" +
               "<a href='/dashboard' class='button fill-green'>Search Again</a>";
   } else {
     content = '<h2>' + feature.properties.title+'<\/h2>' + '<p>' + feature.properties.description+'</p>';
@@ -93,15 +117,22 @@ var params = {
 };
 
 function showUber(results) {
-  confirm("You are about to call this " + results['display_name'] + ", product id: " + results['product_id'] + ". Are you sure you want to proceed?");
+  $('#trigger').click(function() {
+    $('#myModal').modal('show');
+  });
+  // confirm("You are about to call this " + results['display_name'] + ", product id: " + results['product_id'] + ". Are you sure you want to proceed?");
   $('#trigger').html("Uber called!");
 };
 
 function getUberJson() {
-  $.post('/request_uber', params, showUber)
+  $.post('/request_uber', params, showUber);
 };
 
-$('#map-tooltips-js').on('click', '#trigger', getUberJson);
+// $('#map-tooltips-js').on('click', '#trigger', getUberJson);
+
+$('#map-tooltips-js').on('click', '#trigger', function() {
+    $('#myModal').modal('show');
+  });
 
 </script>
 </body>
