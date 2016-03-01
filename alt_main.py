@@ -20,6 +20,8 @@ from utils import import_oauth2_credentials
 # from rauth import OAuth2Service
 
 from yelp_api import yelp_random_pick
+from twilio_test import sendUberText
+
 from geopy.geocoders import Nominatim
 from geopy.distance import vincenty
 from model import connect_to_db, db, User, Search, Rating
@@ -236,7 +238,7 @@ def demo():
 
     return render_template('demo.html', token=token)
 
-@app.route('/request_uber', methods=['POST'])
+@app.route('/request_uber', methods=['POST', 'GET'])
 def request_uber():
     """ """
 
@@ -271,33 +273,48 @@ def request_uber():
 
     print start_lat, start_lng, end_lat, end_lng
 
-    response = uber_client.get_products(start_lat, start_lng)
+    # num_1 = float(start_lat)
+    # num_2 = float(start_lng)
+    # num_3 = float(end_lat)
+    # num_4 = float(end_lng)
+
+    # print isinstance(num_1, float)
+    # print isinstance(num_2, float)
+    # print isinstance(num_3, float)
+    # print isinstance(num_4, float)
+
+    response = uber_client.get_products(37.3688301, -122.0363495)
 
     products = response.json.get('products')
 
     product_id = products[0].get('product_id')
 
-    print product_id
-    print "response", response.json
-    print uber_client.get_user_profile().json
-    print uber_client.get_user_activity().json
+    # print product_id
+    # print "response", response.json
+    # print uber_client.get_user_profile().json
+    # print uber_client.get_user_activity().json
 
-    ride_request = uber_client.request_ride(product_id, start_lat, start_lng, end_lat, end_lng)
+    # make sandbox calls
+    ride_request = uber_client.request_ride(product_id=product_id, 
+                                            start_latitude=37.3688301, 
+                                            start_longitude=-122.0363495, 
+                                            end_latitude=37.8003415, 
+                                            end_longitude=-122.4331332)
     
+
     ride_details = ride_request.json
 
     print "ride details:", ride_details
     
     ride_id = ride_details.get('request_id')
 
-    print ride_id
-
     get_ride = uber_client.update_sandbox_ride(ride_id, 'accepted')
 
-    print get_ride
+    print 'get ride', get_ride
 
-    return jsonify(products[0])
+    sendUberText();
 
+    return jsonify(ride_details)
 
 if __name__ == "__main__":
     

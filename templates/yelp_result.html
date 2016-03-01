@@ -1,46 +1,111 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset=utf-8 />
-  <title></title>
+  <meta charset= "UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Destination ? Map</title>
   <script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.js'></script>
   <link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.css' rel='stylesheet' />
- <!--  <link href='//mapbox.com/base/latest/base.css' rel='stylesheet' /> -->
   <script src='https://code.jquery.com/jquery-1.11.0.min.js'></script>
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
 
   <style>
-    body { margin:0; padding:0; }
-    .map { position:absolute; top:0; bottom:0; width:100%; }
-    #myModal {z-index: 1000}
+    body { margin:0; padding:0; width: 100%; height: 100%;}
+    .map { position:absolute; top:0; bottom:0; width:100%; height: 100 %; z-index: 0}
+    .dot { border-radius:50%; }
+
+    .wrapper {
+    width: 100%;
+    height: 100%;
+    /*outline: 1px dotted red;*/
+    }
+
+    .container {
+        background-color:#ed7669;
+        background: rgba(237, 118, 105, 0.75);
+        color: #fff;
+        position:relative;
+        z-index: 1
+        width: 100%;
+    }
+        
+
+
   </style>
 </head>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+
+<body>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Sign this petition!</h4>
+        <h4 class="modal-title">You are about to call a Uber!</h4>
       </div>
       <div class="modal-body">
-        <p>Fields for the signatures here, take some from the facebook API</p>
+        <p>
+          You're calling a Toyota Prius. <img src="https://d1a3f4spazzrp4.cloudfront.net/uberex-sandbox/images/prius.jpg"/> Eta is 4 minutes. <br> Are you sure you want to proceed?
+        </p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Sign now!</button>
+        <button type="button" id="cancel" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" id="confirm" class="btn btn-primary">Be Swept Away!</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<body>
-<div id='map-tooltips-js' class='map'> </div>
+<!-- <div class="alert alert-success">
+  <strong>Success!</strong> Indicates a successful or positive action.
+</div> -->
+
+<div id="section1-wrapper" class='wrapper'>
+  <div id='map-tooltips-js' class='map'> </div>
+
+  <div class="container">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+             <h3 class="text-center">{{first_name}}'s Destination Unknown</h3>
+        </div>
+
+        <div class="row text-center">
+            <div class="col-xs-12 col-md-4"> <address>
+                    <strong><abbr title="Telephone">Telephone:</abbr> (203) 980-3811</strong>
+                </address>
+            </div>
+
+            <div class="col-xs-12 col-md-4"> <address>
+                    <strong><abbr title="Address">Start Exploring From:</abbr> {{location}} </strong>
+                </address>
+            </div>
+
+            <div class="col-xs-12 col-md-4"> <address>
+                    <strong>
+                        <abbr title="Mail">View Your Stats:</abbr>
+                        <a href="#">Get to Know Yourself!</a>
+                </strong>
+                </address>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div id="section2-wrapper" class="wrapper">Another row of content</div>
 
 <script>
 L.mapbox.accessToken = 'pk.eyJ1Ijoic2hpamllIiwiYSI6ImNpa2tmNnRmaDBiNWZ1ZG02NzJ1dDVvbG0ifQ.IvsMRqi-NR3n4wQC3d9TMQ';
 var mapTooltipsJS = L.mapbox.map('map-tooltips-js', 'shijie.28a6ac8e')
-  .setView([{{start_lat}}, {{start_lng}}], 10);
+  .setView([{{end_lat}}, {{end_lng}}], 10);
 var myLayer = L.mapbox.featureLayer().addTo(mapTooltipsJS);
 
 var geojson = [
@@ -98,16 +163,18 @@ myLayer.on('layeradd', function(e) {
               '<br><br><p>' + feature.properties.description + '</p>' +
               '<p>' + feature.properties.categories + '</p>' +
               // "<br><form action='/request_uber' id='uber' method='POST'><input type='submit' class='button fill-orange' value='Sweep Away by Uber!'></input></form>" +
-              "<a data-toggle='modal' href='#myModal' class='btn btn-lg btn-danger'>Sign!</a>" +
-               "<br><button type='button' class='button fill-orange' id='trigger' data-toggle='modal' data-target='.bs-example-modal-lg'>Get Uber!</button>" +
-              "<a href='/dashboard' class='button fill-green'>Search Again</a>";
+              // "<a data-toggle='modal' href='#myModal' class='btn btn-lg btn-danger'>Sign!</a>" +
+               "<br><button type='button' class='btn btn-info btn-lg btn-block' id='trigger' data-toggle='modal' data-target='.bs-example-modal-lg'>Get Uber!</button>" +
+              "<a href='/dashboard' class='btn btn-secondary btn-lg btn-block'>Search Again</a>";
   } else {
     content = '<h2>' + feature.properties.title+'<\/h2>' + '<p>' + feature.properties.description+'</p>';
   }
   marker.bindPopup(content);
 });
+
 myLayer.setGeoJSON(geojson);
 mapTooltipsJS.scrollWheelZoom.disable();
+
 
 var params = {
   'start_lat': {{start_lat}},
@@ -117,11 +184,16 @@ var params = {
 };
 
 function showUber(results) {
-  $('#trigger').click(function() {
-    $('#myModal').modal('show');
-  });
+  // $('#trigger').click(function() {
+  //   $('#myModal').modal('show');
+  // });
   // confirm("You are about to call this " + results['display_name'] + ", product id: " + results['product_id'] + ". Are you sure you want to proceed?");
-  $('#trigger').html("Uber called!");
+  $('#myModal').modal('hide');
+
+  $('#trigger').removeClass("btn btn-info btn-lg btn-block")
+               .addClass("btn btn-success btn-lg btn-block")
+               .attr("disabled", true)
+               .html("Uber called!");
 };
 
 function getUberJson() {
@@ -131,8 +203,12 @@ function getUberJson() {
 // $('#map-tooltips-js').on('click', '#trigger', getUberJson);
 
 $('#map-tooltips-js').on('click', '#trigger', function() {
-    $('#myModal').modal('show');
-  });
+  $('#myModal').modal('show');
+  $('#confirm').on('click', getUberJson);
+
+});
+
+
 
 </script>
 </body>

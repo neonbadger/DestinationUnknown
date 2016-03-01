@@ -1,27 +1,5 @@
 <!DOCTYPE html>
 
-<!-- <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Dashboard</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-    </head>
-    <style>
-      body {
-        padding: 45px 0 0 0;
-      }
-    </style>
-
-    <body>
-
-        <div class="container">
-            <div id="form" class="row">
-                <div id="fields" class="col-md-6 col-md-offset-3"> -->
-
-<!DOCTYPE html>
 <html lang="en" class="no-js">
   <head>
     <meta charset="UTF-8" />
@@ -31,18 +9,40 @@
     <link rel="stylesheet" type="text/css" href="static/css/default.css" />
     <link rel="stylesheet" type="text/css" href="static/css/component.css" />
     <script src="static/js/modernizr.custom.js"></script>
+    <style type="text/css">
+
+    header img {
+      border: 5px solid #fff;
+      border-radius: 50%;
+      display: block;
+      margin: 10px auto;
+      width: 200px;
+    }
+
+    .image_off, #image_swap:hover .image_on{
+      display:none
+    }
+
+    .image_on, #image_swap:hover .image_off{
+       display:block
+    }
+
+    </style>
   </head>
   <body class="nl-blurred">
     <div class="container demo-1">
       <!-- Top Navigation -->
       <div class="codrops-top clearfix">
-        <a class="codrops-icon codrops-icon-prev" href="http://tympanus.net/Development/MorphingDevices/"><span>Previous Demo</span></a>
-        <span class="right"><a class="codrops-icon codrops-icon-drop" href="http://tympanus.net/codrops/?p=15139"><span>Back to the Codrops Article</span></a></span>
+        <a class="codrops-icon codrops-icon-prev" href="/"><span>Home</span></a>
+        <span class="right"><a class="codrops-icon codrops-icon-drop" href="http://tympanus.net/codrops/?p=15139"><span>My Stats</span></a></span>
       </div>
 
       <header>
         <h1>Hello {{first_name}}.<span>Meet your curious self.</span></h1> 
-        <img src='{{img_url}}'>
+        <a id='image_swap'>
+          <img class="image_on" src='{{img_url}}' alt="uber profile" />
+          <img class="image_off" src='static/img/cat.png' alt="curious cat" />
+        </a>
       </header>
       <div class="main clearfix">
         <form id="nl-form" class="nl-form" action="/yelp_result" method="POST">
@@ -55,16 +55,6 @@
             <option value="empty">empty</option>
             <option value="something">something</option>
           </select>.
-          <select name="alter_ego">
-            <option value="daenerys targaryen" selected>Daenerys Targaryen</option>
-            <option value="ziggy stardust">Ziggy Stardust</option>
-            <option value="sally ride">Sally Ride</option>
-            <option value="buzz aldrin">Buzz Aldrin</option>
-            <option value="serena williams">Serena Williams</option>
-            <option value="roger federer">Roger Federer</option>
-            <option value="taylor swift">T-Swift</option>
-            <option value="kimye">Kimye</option>
-          </select> is my alter ego.
           I'd like to escape from 
           <input type="text" name="location" placeholder="221B Baker Street, London" data-subline="Ex. <em>123 Sutter Street, San Francisco</em>" required/>
           for an
@@ -91,8 +81,19 @@
             <option value="Redwood City">Redwood City</option>
             <option value="Berkeley">Berkeley</option>
             <option value="Santa Cruz">Santa Cruz</option>
-          </select>. My number is 
-          <input type="text" name="phone" placeholder="123-456-7890" data-subline="Ex. <em>123-456-7890</em>" required/>.
+          </select>. &nbsp;
+          <select name="alter_ego">
+            <option value="daenerys targaryen" selected>Daenerys Targaryen</option>
+            <option value="ziggy stardust">Ziggy Stardust</option>
+            <option value="sally ride">Sally Ride</option>
+            <option value="buzz aldrin">Buzz Aldrin</option>
+            <option value="serena williams">Serena Williams</option>
+            <option value="roger federer">Roger Federer</option>
+            <option value="taylor swift">T-Swift</option>
+            <option value="kimye">Kimye</option>
+          </select> is my alter ego. &nbsp; 
+          My number is 
+          <input type="text" name="phone" placeholder="123-456-7890" data-subline="Ex. <em>123-456-7890</em>" required/>. &nbsp;
           Text me maybe?
           <div class="nl-submit-wrap">
             <button class="nl-submit" type="submit">Find a destination</button>
@@ -104,6 +105,7 @@
     <script src="static/js/nlform.js"></script>
     <script>
       var nlform = new NLForm( document.getElementById( 'nl-form' ) );
+
     </script>
   </body>
 </html>
