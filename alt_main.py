@@ -316,6 +316,11 @@ def request_uber():
 
     return jsonify(ride_details)
 
+@app.route('/show_stats')
+def show_stats():
+
+    return render_template("d3.html")
+
 if __name__ == "__main__":
     
     # credentials = import_app_credentials()
@@ -331,4 +336,5 @@ if __name__ == "__main__":
     db.session.commit()
 
     app.run()
+    url_for('static', filename='event.csv')
 

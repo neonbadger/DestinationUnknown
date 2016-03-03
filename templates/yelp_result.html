@@ -50,11 +50,11 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">You are about to call a Uber!</h4>
+        <h4 class="modal-title">You are about to call Uber!</h4>
       </div>
       <div class="modal-body">
         <p>
-          You're calling a Toyota Prius. <img src="https://d1a3f4spazzrp4.cloudfront.net/uberex-sandbox/images/prius.jpg"/> Eta is 4 minutes. <br> Are you sure you want to proceed?
+          A Toyota Prius will be on its way to you. <img src="https://d1a3f4spazzrp4.cloudfront.net/uberex-sandbox/images/prius.jpg"/> <br> Eta is 4 minutes. Do you want to proceed?
         </p>
       </div>
       <div class="modal-footer">
@@ -91,7 +91,7 @@
             <div class="col-xs-12 col-md-4"> <address>
                     <strong>
                         <abbr title="Mail">View Your Stats:</abbr>
-                        <a href="#">Get to Know Yourself!</a>
+                        <a href="/show_stats">Get to Know Yourself!</a>
                 </strong>
                 </address>
             </div>
@@ -139,7 +139,7 @@ var geojson = [
       "categories": "<em> Categories </em>: {% for category in biz.categories %} {{category['name']}} {% endfor %}",
       "image": "{{biz.rating_img_url_large}}",
       "icon": {
-          "iconUrl": "https://www.mapbox.com/mapbox.js/assets/images/astronaut1.png",
+          "iconUrl": "static/img/cat.png",
           "iconSize": [80, 80], // size of the icon
           "iconAnchor": [25, 25], // point of the icon which will correspond to marker's location
           "popupAnchor": [0, -25], // point from which the popup should open relative to the iconAnchor
