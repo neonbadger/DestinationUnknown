@@ -1,0 +1,703 @@
+<!doctype html>
+<meta charset="utf-8">
+
+<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+<!-- load D3js -->
+<script src="http://www.d3plus.org/js/d3.js"></script>
+
+<!-- load D3plus after D3js -->
+<script src="http://www.d3plus.org/js/d3plus.js"></script>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<html>
+<head>
+    <title></title>
+</head>
+<style type="text/css">
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro);
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+.wrapper {
+  margin-bottom: 50px;
+}
+/*
+ body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: auto;
+  position: relative;
+  width: 960px;
+}*/
+
+text {
+  font: 10px sans-serif;
+}
+
+form {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+    path{
+        stroke: black;
+        stroke-width: .25px;
+    }
+    path.fade{
+        display: none;
+    }
+
+    rect {
+    stroke-width: 2;
+    cursor: pointer;
+  }
+
+  rect.disabled {
+    fill: transparent !important;
+  }
+
+  #browser-chart--bars,
+  .donut-chart {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Just for testing  */
+    /*border: 2px solid black;   */
+  }
+
+  .tooltip--bars {
+    z-index: 100;
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 30%;
+    text-align: center;
+    padding: .7em;
+    background-color: white;
+    box-shadow       : 0 0 5px hsla(0, 0%, 20%, 0.9);
+    color: hsl(0, 0%, 20%);
+    min-width: 45%;
+    max-width: 95%;
+    box-sizing: border-box;
+  }
+
+  .tooltip--bars .value {
+    font-weight: bold;
+  }
+
+  .tooltip {
+    display    : none;
+    position   : absolute;
+    width      : 80px;
+    top        : 10%;
+    right      : 25%;
+    text-align : center;
+    color      : #333;
+    font-size  : 12px;
+    padding    : 10px;
+    z-index    : 10;
+    background-color : #eee;
+    box-shadow       : 0 0 5px #999999;
+  }                        
+
+</style>
+<body>
+    <div class="container wrapper">
+      <h1 class="page-header">View Your Stats</h1>
+      
+      <div class="row">
+        <div class="col-md-12">
+          <p>What are you made of?</p>
+          <div class="donut-chart"></div>
+        </div>
+        <div class="col-md-12">
+          <p>What does your mood say about your event choice?</a></p>
+          <div class="chart2"></div>
+        </div>
+        <div class="col-md-12">
+          <p>When are you feeling the boldest and taking the extra mile?</a></p>
+          
+        </div>
+        <div class="chart3"></div>
+      </div>
+</div>
+
+</body>
+<script type="text/javascript">
+
+        var dataset = [
+          { label: 'Tswift', count: 50, enabled: true }, 
+          { label: 'Khaleesi', count: 60, enabled: true },
+          { label: 'Sally Ride', count: 10, enabled: true },
+          { label: 'Kimye', count:40 , enabled: true },
+          { label: 'Serena', count: 20, enabled: true }
+        ];
+
+        var svgWidth  = 320,
+            svgHeight = 320,
+            radius = Math.min(svgWidth, svgHeight) / 2,
+            donutWidth = 75;
+
+        var color = d3.scale.category10();    
+     
+        var svg = d3.select('.donut-chart')
+                    .append('svg')
+                      .attr('width', svgWidth)
+                      .attr('height', svgHeight)
+                    .append('g')
+                      .attr("class", "container")
+                      .attr('transform', 'translate(' + (svgWidth / 2) +  ',' + (svgHeight / 2) + ')'); 
+
+
+        // Define the radius
+        var arc = d3.svg.arc()
+                        .innerRadius(radius - donutWidth)  // Make PIE chart a Donut
+                        .outerRadius(radius);
+
+
+
+        // Define the angles
+        var pie = d3.layout.pie()
+                    .value(function(d) {
+                      return d.count;
+                    })
+                    .sort(null);
+
+
+        // Define the Tooltip
+        var tooltip = d3.select('.donut-chart')            
+                        .append('div')
+                          .attr('class', 'tooltip');
+
+
+        tooltip.append('div')
+          .attr('class', 'label');
+
+        tooltip.append('div')
+          .attr('class', 'count');
+
+        tooltip.append('div')
+          .attr('class', 'percent');
+         
+
+
+        // Define the PIE chart          
+        var path = svg.selectAll('path')
+                      .data(pie(dataset))
+                      .enter()
+                      .append('path')
+                      .attr('d', arc)
+                      .attr('fill', function(d, i) { 
+                        return color(d.data.label);
+                      })
+                      .each(function(d) { this._current = d; });
+
+
+        path.on('mouseover', function(d) {
+          var total = d3.sum(dataset.map(function(d) {
+            return d.count;
+            // return (d.enabled) ? d.count : 0;
+          }));
+
+          var percent = Math.round(1000 * d.data.count / total) / 10;
+
+          tooltip.select('.label').html(d.data.label);
+
+          tooltip.select('.count').html(d.data.count); 
+
+          tooltip.select('.percent').html(percent + '%'); 
+
+          tooltip.style('display', 'block');
+        });
+
+        path.on('mouseout', function() {
+              tooltip.style('display', 'none');
+            });  
+      
+
+
+        // Define the Legend
+        var legendRectSize = 18,
+            legendSpacing  = 4;              
+
+
+        var legend = svg.selectAll('.legend')
+                        .data(color.domain())
+                        .enter()
+                        .append('g')
+                          .attr('class', 'legend')
+                          .attr('transform', function(d, i) {
+
+                            var height = legendRectSize + legendSpacing,
+                                offset = height * color.domain().length / 2,
+                                horz   = -2 * legendRectSize,
+                                vert   = i * height - offset;
+                            return 'translate(' + horz + ',' + vert + ')';
+
+                          });
+
+        // Legend Content
+        legend.append('rect')
+                .attr('width', legendRectSize)
+                .attr('height', legendRectSize)
+                .style('fill', color)
+                .style('stroke', color)
+                .on('click', function(label) {
+                  var rect = d3.select(this);
+                  var enabled = true;
+                  var totalEnabled = d3.sum(dataset.map(function(d) {
+                    return (d.enabled) ? 1 : 0;
+                  }));
+                  
+                  if (rect.attr('class') === 'disabled') {
+                    rect.attr('class', '');
+                  } else {
+                    if (totalEnabled < 2) return;
+                    rect.attr('class', 'disabled');
+                    enabled = false;
+                  }
+
+                  pie.value(function(d) {
+                    if (d.label === label) d.enabled = enabled;
+                    return (d.enabled) ? d.count : 0;
+                  });
+
+                  path = path.data(pie(dataset));
+
+                  path.transition()
+                    .duration(750)
+                    .attrTween('d', function(d) {
+                      var interpolate = d3.interpolate(this._current, d);
+                      this._current = interpolate(0);
+                      return function(t) {
+                        return arc(interpolate(t));
+                      };
+                    });
+
+                });
+
+        legend.append('text')
+                .attr('x', legendRectSize + legendSpacing)
+                .attr('y', legendRectSize - legendSpacing)
+                .text(function(d) { return d; });  
+
+
+
+
+// var dataset = {
+//   apples: [53245, 28479, 19697, 24037, 40245],
+// };
+
+// var width = 460,
+//     height = 300,
+//     radius = Math.min(width, height) / 2;
+
+// var color = d3.scale.category20();
+
+// var pie = d3.layout.pie()
+//     .sort(null);
+
+// var arc = d3.svg.arc()
+//     .innerRadius(radius - 100)
+//     .outerRadius(radius - 50);
+
+// var svg = d3.select(".donut-chart").append("svg")
+//     .attr("width", width)
+//     .attr("height", height)
+//     .append("g")
+//     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+// var path = svg.selectAll("path")
+//     .data(pie(dataset.apples))
+//   .enter().append("path")
+//     .attr("fill", function(d, i) { return color(i); })
+//     .attr("d", arc);
+
+// var width  = 400,
+//     height = 400,
+//     radius = 200,
+//     colors = d3.scale.category20()
+
+// var piedata = [
+//   { 
+//     label: 'Bob',
+//     value: 50
+//   },{
+//     label: 'Gerald',
+//     value: 50
+//   },{
+//     label: 'Jennifer',
+//     value: 50
+//   },{
+//     label: 'Lorenzo',
+//     value: 50
+//   },{
+//     label: 'Hillary',
+//     value: 50
+//   }, {
+//     label: 'Jane',
+//     value: 50
+//   }
+// ]
+
+// var pie = d3.layout.pie()
+//   .value(function(d) { return d.value; })
+
+// var arc = d3.svg.arc()
+//   .outerRadius(radius)
+
+// var myChard = d3.select('.chart').append('svg')
+//   .attr('width', width)
+//   .attr('height', height)
+//   .append('g')
+//   .attr('transform', 'translate('+ (width - radius) +', '+ (height - radius) +')')
+//   .selectAll('path').data(pie(piedata))
+//   .enter().append('g')
+//     .attr('class', 'slice')
+
+// var slices = d3.selectAll('g.slice')
+//   .append('path')
+//   .attr('fill', function(d, i) {
+//      return colors(i);
+//    })
+//    .attr('d', arc)
+//    .on('mouseover', function() {
+//      d3.select(this)
+//       .style('opacity', 0.8)
+//    })
+//   .on('mouseout', function() {
+//      d3.select(this)
+//       .style('opacity', 1)
+//    })
+
+// var text = d3.selectAll('g.slice')
+//   .append('text')
+//   .text(function(d) { return d.data.label; }) //slice = d, so we the slice's data.
+//   .attr('text-anchor', 'middle')
+//   .attr('fill', 'white')
+//   .attr('transform', function(d) {
+//     d.innerRadius = 0;
+//     d.outerRadius = radius;
+//     return 'translate('+arc.centroid(d)+')';//puts text at center of slice
+//   })
+
+//Chart2
+
+// var sample_data = [
+//     {"name": "Westside Chiropractic", "distance": 6, "alter ego": "taylor swift", "mood": "strange"},
+//     {"name": "Hey, Cookie", "distance": 8, "alter ego": "serena williams", "mood": "strange"},
+//     {"name": "Honeybee Acupuncture", "distance": 7, "alter ego": "buzz aldrin", "mood": "empty"},
+//     {"name": "Serenity Day Spa", "distance": 9, "alter ego": "kimye", "mood": "strange"},
+//     {"name": "Nor Cal Laser Tag", "distance": 12, "alter ego": "serena williams", "mood": "strange"},
+//     {"name": "Green Zen Center", "distance": 15, "alter ego": "buzz aldrin", "mood": "strange"},
+//     {"name": "Arrow Salon", "distance": 5, "alter ego": "buzz aldrin", "mood": "strange"},
+//     {"name": "Little Gem Belgian Waffles", "distance": 10, "alter ego": "kimye", "mood": "strange"},
+//     {"name": "San Antonio Ranch", "distance": 3, "alter ego": "Sally Ride", "mood": "adventurous"},
+//     {"name": "Greek Spot", "distance": 7, "alter ego": "Kimye", "mood": "adventurous"}
+//   ]
+//   // create list of node positions
+//   var positions = [
+//     {"name": "Westside Chiropractic", "x": 10, "y": 15},
+//     {"name": "Hey, Cookie", "x": 12, "y": 24},
+//     {"name": "Honeybee Acupuncture", "x": 16, "y": 18},
+//     {"name": "Serenity Day Spa", "x": 26, "y": 21},
+//     {"name": "Nor Cal Laser Tag", "x": 13, "y": 4},
+//     {"name": "Green Zen Center", "x": 31, "y": 13},
+//     {"name": "Arrow Salon", "x": 19, "y": 8},
+//     {"name": "Little Gem Belgian Waffles", "x": 24, "y": 11},
+//     {"name": "San Antonio Ranch", "x": 20, "y": 15},
+//     {"name": "Greek Spot", "x": 18, "y": 20}
+//   ]
+//   // create list of node connections
+//   var connections = [
+//     {"source": "Westside Chiropractic", "target": "Serenity Day Spa"},
+//     {"source": "Serenity Day Spa", "target": "Green Zen Center"},
+//     {"source": "Serenity Day Spa", "target": "Arrow Salon"},
+//     {"source": "Green Zen Center", "target": "Serenity Day Spa"},
+//     {"source": "Green Zen Center", "target": "Honeybee Acupuncture"},
+//     {"source": "Hey, Cookie", "target": "Little Gem Belgian Waffles"},
+//     {"source": "Hey, Cookie", "target": "Greek Spot"},
+//     {"source": "Nor Cal Laser Tag", "target": "San Antonio Ranch"},
+//   ]
+//   // instantiate d3plus
+//   var visualization = d3plus.viz()
+//     .container(".chart3")  // container DIV to hold the visualization
+//     .type("network")    // visualization type
+//     .data(sample_data)  // sample dataset to attach to nodes
+//     .nodes(positions)   // x and y position of nodes
+//     .edges(connections) // list of node connections
+//     .size("distance")       // key to size the nodes
+//     .id("name")         // key for which our data is unique on
+//     .tooltip(["name", "distance", "alter ego", "mood"])
+//     .draw()             // finally, draw the visualization!
+
+var w = 1200,
+    h = 600;
+
+var circleWidth = 5;
+
+var palette = {
+  "lightgray": "#819090",
+  "gray": "#708284",
+  "mediumgray": "#536870",
+  "darkgray": "#475B62",
+
+  "darkblue": "#0A2933",
+  "darkerblue": "#042029",
+
+  "paleryellow": "#FCF4DC",
+  "paleyellow": "#EAE3CB",
+  "yellow": "#A57706",
+  "orange": "#BD3613",
+  "red": "#D11C24",
+  "pink": "#C61C6F",
+  "purple": "#595AB7",
+  "blue": "#2176C7",
+  "green": "#259286",
+  "yellowgreen": "#738A05"
+}
+
+var nodes = [
+  { name: 'Follow Your Boldness'},
+  { name: 'Eat', target: [0]},
+  { name: 'Exercise', target: [0]},
+  { name: 'Relax', target: [0]},
+  { name: 'Friend', target: [0]},
+  { name: 'Night', target: [0]},
+  { name: 'Hello Cookie!', target: [1]},
+  { name: 'Greek Spot', target: [1]},
+  { name: 'Aqui Mexican Grill', target: [1]},
+  { name: "Big T's Seafood", target: [1]},
+  { name: 'Soul Cycle', target: [2]},
+  { name: 'San Antonio Ranch', target: [2]},
+  { name: 'Alum Rock', target: [2]},
+  { name: 'CrossFit SOMA', target: [2]},
+  { name: 'Planet Granite Rock Climbing', target: [2]},
+  { name: 'Castle Rock', target: [2]},
+  { name: 'Bliss Spa', target: [3]},
+  { name: 'Illuminata Skin Care', target: [3]},
+  { name: 'Green Zen Center', target: [3]},
+  { name: 'Yoga Tree', target: [3]},
+  { name: 'Buddha Therapeutic Massage', target: [3]},
+  { name: 'Oxygen Room', target: [3]},
+  { name: 'Real Escape Room', target: [4]},
+  { name: 'K1 Speed', target: [4]},
+  { name: 'Nor Cal Laser Tag', target: [4]},
+  { name: 'Paintball Jungle', target: [4]},
+  { name: 'House of Air', target: [4]},
+  { name: 'Urban Putt', target: [4]},
+  { name: 'Wine Sip', target: [5]},
+  { name: 'Bourbon Bar', target: [5]},
+  { name: 'Tapas Bar', target: [5]},
+  { name: 'Sheba Piano Lounge', target: [5]},
+  { name: 'Irish House', target: [5]},
+  { name: 'Biscuits & Blues', target: [5]},
+]
+
+var links = [];
+
+for (var i = 0; i < nodes.length; i++) {
+  if(nodes[i].target !== undefined) {
+    for (var x = 0; x < nodes[i].target.length; x++) {
+      links.push({
+        source: nodes[i],
+        target: nodes[nodes[i].target[x]]
+      });
+    }
+  }
+}
+
+var myChart3 = d3.select('.chart3').append('svg')
+  .attr('width', w)
+  .attr('height', h)
+  .style('background', palette.paleryellow)
+
+var force = d3.layout.force()
+  .nodes(nodes)
+  .links([])
+  .gravity(0.3)
+  .charge(-500)
+  .size([w, h])
+
+var link = myChart3.selectAll('line')
+  .data(links).enter().append('line')
+  .attr('stroke', palette.gray)
+
+var node = myChart3.selectAll('circle')
+  .data(nodes).enter()
+  .append('g')
+  .call(force.drag)
+
+node.append('circle')
+  .attr('cx', function(d) { return d.x; })
+  .attr('cy', function(d) { return d.y; })
+  .attr('r', circleWidth)
+  .attr('fill', function(d, i) {
+    if (i > 0) { return palette.pink; }
+    else { return palette.blue; }
+  })
+
+node.append('text')
+  .text(function(d) { return d.name; })
+  .attr('text-anchor', function (d, i) {
+    if (i > 0) { return 'beginning' }
+    else { return 'end'}
+  })
+  .attr('font-size', function (d, i) {
+    if (i > 0) { return '1.1em'; }
+    else { return '1.8em'; }
+  })
+  .attr('fill', function(d, i) {
+    if (i > 0) { return palette.mediumgray }
+    else { return palette.yellowgreen }
+  })
+  .attr('x', function (d, i) {
+    if (i > 0) { return circleWidth + 5; }
+    else { return circleWidth - 12; }
+  })
+  .attr('y', function (d, i) {
+    if (i > 0) { return circleWidth; }
+    else { return circleWidth + 2;}
+  })
+
+force.on('tick', function(e) {
+  node.attr('transform', function(d, i) {
+    return 'translate('+ d.x +', '+ d.y +')';
+  })
+  link
+    .attr('x1', function(d) { return d.source.x })
+    .attr('y1', function(d) { return d.source.y })
+    .attr('x2', function(d) { return d.target.x })
+    .attr('y2', function(d) { return d.target.y })
+})
+
+force.start();
+
+// chart2
+        var margin      = {top: 50, right: 10, bottom: 10, left: 50},
+        width       = 960 - margin.left - margin.right,
+        height      = 600 - margin.top  - margin.bottom,
+        innerRadius = Math.min(width, height) * .35,
+        outerRadius = innerRadius * 1.1;
+
+    var svg = d3.select(".chart2").append("svg")
+        .attr("width",  width  + margin.left + margin.right)
+        .attr("height", height + margin.top  + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+        .append("g")
+        .attr("class", "chordgraph")
+        .attr("transform", "translate(" + width/2 + "," + height/2 + ")");
+
+    d3.csv("static/event.csv", function(d){
+
+        /*
+         * IMPORTANT! Specify your first column of data here (see example data)
+         *
+         */
+        var firstColumn = "first_column";
+
+        //store coloumn names
+        var fc = d.map(function(d){ return d[firstColumn]; }),
+            fo = fc.slice(0),
+            maxtrix_size = (Object.keys(d[0]).length - 1) + fc.length,
+            matrix  = [];
+
+        //Create an empty square matrix of zero placeholders, the size of the ata
+        for(var i=0; i < maxtrix_size; i++){
+            matrix.push(new Array(maxtrix_size+1).join('0').split('').map(parseFloat));
+        }
+
+        //go through the data and convert all to numbers except "first_column"
+        for(var i=0; i < d.length; i++){
+
+            var j = d.length;//counter
+
+            for(var prop in d[i]){
+                if(prop != firstColumn){
+                    fc.push(prop);
+                    matrix[i][j] = +d[i][prop];
+                    matrix[j][i] = +d[i][prop];
+                    j++;
+                }
+            }
+        }
+
+        var chord = d3.layout.chord()
+            .padding(.1)
+            .sortSubgroups(d3.descending)
+            .matrix(matrix);
+
+        var chordgroups = chord.groups()
+            .map(function(d){ d.angle = (d.startAngle + d.endAngle)/2; return d; });
+
+        var arc = d3.svg.arc()
+            .innerRadius(innerRadius)
+            .outerRadius(outerRadius);
+
+        var fill = d3.scale.category20();
+
+        svg.selectAll("path")
+            .data(chord.groups)
+            .enter()
+            .append("path")
+            .style("fill", function(d, i){ return (d.index+1) > fo.length ? fill(d.index): "#ccc";})
+            .style("stroke", function(d, i) { return "#000"; })
+            .style("cursor", "pointer")
+            .attr("d", arc)
+            .on("mouseover", function(d, i){
+                chords.classed("fade", function(d){
+                    return d.source.index != i && d.target.index != i;
+                  })
+            });
+
+
+        var chords = svg.append("g")
+            .attr("class", "chord")
+            .selectAll("path")
+            .data(chord.chords)
+            .enter()
+            .append("path")
+            //set the starting node. Change index from zero here.
+            //to start with a target dataset, change d.source.index to d.target.index
+            .classed("fade", function(d,i){return d.source.index == 0 ? false : true;})
+            .attr("d", d3.svg.chord().radius(innerRadius))
+            .style("fill", function(d) { return fill(d.source.subindex); })
+            .style("stroke", function(d){ return "#000";});
+
+        svg.selectAll(".text")
+            .data(chordgroups)
+            .enter()
+            .append("text")
+            .attr("class", "text")
+            .attr("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
+            .attr("transform", function(d){
+
+                //rotate each label around the circle           
+                return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")" + 
+                       "translate(" + (outerRadius + 10) + ")" +
+                       (d.angle > Math.PI ? "rotate(180)" : "");
+
+            })
+            .text(function(d,i){
+                //set the text content
+                return fc[i];
+            })
+            .style({
+                "font-family":"sans-serif",
+                "font-size"  :"12px"
+            })
+
+    });
+
+</script>
+</html>
