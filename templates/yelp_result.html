@@ -16,8 +16,11 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
 
   <style>
+    @import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
     body { margin:0; padding:0; width: 100%; height: 100%;}
     .map { position:absolute; top:0; bottom:0; width:100%; height: 100 %; z-index: 0}
     .dot { border-radius:50%; }
@@ -29,12 +32,15 @@
     }
 
     .container {
-        background-color:#ed7669;
-        background: rgba(237, 118, 105, 0.75);
-        color: #fff;
+        background-color: #B0B0B0;
+        background: rgba(253, 119, 92, 0.80);
+        color: #241C04;
         position:relative;
-        z-index: 1
-        width: 100%;
+        z-index: 1;
+/*        width: 100%;*/
+        font-family: 'Lato', Calibri, Arial, sans-serif;
+        padding-bottom: 1%;
+
     }
         
 
@@ -78,22 +84,20 @@
         </div>
 
         <div class="row text-center">
-            <div class="col-xs-12 col-md-4"> <address>
-                    <strong><abbr title="Telephone">Telephone:</abbr> (203) 980-3811</strong>
-                </address>
+            <div class="col-xs-12 col-md-4">
+              <i class="fa fa-mobile fa-lg"></i>
+              <strong>  (203) 980-3811</strong>
             </div>
 
-            <div class="col-xs-12 col-md-4"> <address>
-                    <strong><abbr title="Address">Start Exploring From:</abbr> {{location}} </strong>
-                </address>
+            <div class="col-xs-12 col-md-4">
+                <i class="fa fa-map-marker fa-lg"></i>
+                <strong>  {{location}} </strong>
             </div>
 
-            <div class="col-xs-12 col-md-4"> <address>
-                    <strong>
-                        <abbr title="Mail">View Your Stats:</abbr>
-                        <a href="/show_stats">Get to Know Yourself!</a>
+            <div class="col-xs-12 col-md-4">
+                <i class="fa fa-bar-chart fa-lg"></i>
+                <strong><a href="/show_stats">View Your Stats</a>
                 </strong>
-                </address>
             </div>
 
 
