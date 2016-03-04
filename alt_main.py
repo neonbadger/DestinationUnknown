@@ -7,7 +7,7 @@ from flask import request, url_for
 from flask import render_template
 from flask import flash, jsonify
 
-from jinja2 import StrictUndefined
+# from jinja2 import StrictUndefined
 from flask_debugtoolbar import DebugToolbarExtension
 
 from uber_rides.session import Session
@@ -24,7 +24,10 @@ from twilio_test import sendUberText
 
 from geopy.geocoders import Nominatim
 from geopy.distance import vincenty
+
 from model import connect_to_db, db, User, Search, Rating
+from sqlalchemy import func
+
 
 import requests
 import os
@@ -45,9 +48,7 @@ app.secret_key = os.urandom(24)
 
 geolocator = Nominatim()
 
-# Normally, if you use an undefined variable in Jinja2, it fails silently.
-# This is horrible. Fix this so that, instead, it raises an error.
-app.jinja_env.undefined = StrictUndefined
+# app.jinja_env.undefined = StrictUndefined
 
 # import app credentials imported from the configuration file.
 credentials = import_app_credentials()
@@ -319,7 +320,17 @@ def request_uber():
 @app.route('/show_stats')
 def show_stats():
 
-    return render_template("d3.html")
+    bold_stat = Search.query.filter_by(uber_request = 'T').count()
+    curious_stat = Search.query.filter_by(uber_request = 'F').count()
+    uber_miles = db.session.query(func.sum(Search.mileage)).filter(Search.uber_request == 'T').scalar()
+    moods = db.session.query(func.count(Search.mood), Search.mood).group_by(Search.mood).all()
+    alter_ego = db.session.query(func.count(Search.alter_ego), Search.alter_ego).group_by(Search.alter_ego).all()
+
+    print bold_stat, curious_stat, uber_miles, moods, alter_ego
+
+    return render_template("d3.html", bold_stat=bold_stat,
+                                      curious_stat=curious_stat,
+                                      uber_miles=uber_miles)
 
 if __name__ == "__main__":
     
