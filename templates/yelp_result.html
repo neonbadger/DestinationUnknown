@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
+<meta charset= "UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 <head>
-  <meta charset= "UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   <title>Destination ? Map</title>
   <link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.4/mapbox.css' rel='stylesheet'/>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -73,107 +73,106 @@
 
   </div>
 
-<script>
+  <script>
 
-  L.mapbox.accessToken = 'pk.eyJ1Ijoic2hpamllIiwiYSI6ImNpa2tmNnRmaDBiNWZ1ZG02NzJ1dDVvbG0ifQ.IvsMRqi-NR3n4wQC3d9TMQ';
+    L.mapbox.accessToken = 'pk.eyJ1Ijoic2hpamllIiwiYSI6ImNpa2tmNnRmaDBiNWZ1ZG02NzJ1dDVvbG0ifQ.IvsMRqi-NR3n4wQC3d9TMQ';
 
-  var mapTooltipsJS = L.mapbox.map('map-tooltips-js', 'shijie.28a6ac8e')
-    .setView([{{end_lat}}, {{end_lng}}], 10);
+    var mapTooltipsJS = L.mapbox.map('map-tooltips-js', 'shijie.28a6ac8e')
+      .setView([{{end_lat}}, {{end_lng}}], 10);
 
-  var myLayer = L.mapbox.featureLayer().addTo(mapTooltipsJS);
+    var myLayer = L.mapbox.featureLayer().addTo(mapTooltipsJS);
 
-  var geojson = [
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [{{start_lng}}, {{start_lat}}]
+    var geojson = [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [{{start_lng}}, {{start_lat}}]
+        },
+        "properties": {
+          "title": "{{first_name}}! Your journey starts here!",
+          "description": "{{location}}",
+          "icon": {
+              "iconUrl": "{{pic}}",
+              "iconSize": [80, 80],
+              "iconAnchor": [25, 25],
+              "popupAnchor": [0, -25],
+              "className": "dot"
+          }
+        }
       },
-      "properties": {
-        "title": "{{first_name}}! Your journey starts here!",
-        "description": "{{location}}",
-        "icon": {
-            "iconUrl": "{{pic}}",
-            "iconSize": [80, 80],
-            "iconAnchor": [25, 25],
-            "popupAnchor": [0, -25],
-            "className": "dot"
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [{{end_lng}}, {{end_lat}}]
+        },
+        "properties": {
+          "title": "Destination Unknown",
+          "description": "<em> Review Highlight</em>: {{review}}",
+          "categories": "<em> Categories </em>: {% for category in biz.categories %} {{category['name']}} {% endfor %}",
+          "image": "{{biz.rating_img_url_large}}",
+          "icon": {
+              "iconUrl": "static/img/cat.png",
+              "iconSize": [80, 80],
+              "iconAnchor": [25, 25],
+              "popupAnchor": [0, -25],
+              "className": "dot"
+          }
         }
       }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [{{end_lng}}, {{end_lat}}]
-      },
-      "properties": {
-        "title": "Destination Unknown",
-        "description": "<em> Review Highlight</em>: {{review}}",
-        "categories": "<em> Categories </em>: {% for category in biz.categories %} {{category['name']}} {% endfor %}",
-        "image": "{{biz.rating_img_url_large}}",
-        "icon": {
-            "iconUrl": "static/img/cat.png",
-            "iconSize": [80, 80],
-            "iconAnchor": [25, 25],
-            "popupAnchor": [0, -25],
-            "className": "dot"
-        }
+    ];
+
+    myLayer.on('layeradd', function(e) {
+      var marker = e.layer, feature = marker.feature;
+      
+      marker.setIcon(L.icon(feature.properties.icon));
+      
+      var content;
+      
+      if (feature.properties.image) {
+        content = '<h2>'+ feature.properties.title+'<\/h2>' + 
+                  '<img src="'+feature.properties.image +'" alt="">' + 
+                  '<br><br><p>' + feature.properties.description + '</p>' +
+                  '<p>' + feature.properties.categories + '</p>' +
+                   "<br><button type='button' class='btn btn-info btn-lg btn-block' id='trigger' data-toggle='modal' data-target='.bs-example-modal-lg'>Get Uber!</button>" +
+                  "<a href='/search' class='btn btn-secondary btn-lg btn-block'>Search Again</a>";
+      } else {
+        content = '<h2>' + feature.properties.title+'<\/h2>' + '<p>' + feature.properties.description+'</p>';
       }
-    }
-  ];
 
-  myLayer.on('layeradd', function(e) {
-    var marker = e.layer, feature = marker.feature;
-    
-    marker.setIcon(L.icon(feature.properties.icon));
-    
-    var content;
-    
-    if (feature.properties.image) {
-      content = '<h2>'+ feature.properties.title+'<\/h2>' + 
-                '<img src="'+feature.properties.image +'" alt="">' + 
-                '<br><br><p>' + feature.properties.description + '</p>' +
-                '<p>' + feature.properties.categories + '</p>' +
-                 "<br><button type='button' class='btn btn-info btn-lg btn-block' id='trigger' data-toggle='modal' data-target='.bs-example-modal-lg'>Get Uber!</button>" +
-                "<a href='/search' class='btn btn-secondary btn-lg btn-block'>Search Again</a>";
-    } else {
-      content = '<h2>' + feature.properties.title+'<\/h2>' + '<p>' + feature.properties.description+'</p>';
-    }
+      marker.bindPopup(content);
+    });
 
-    marker.bindPopup(content);
-  });
+    myLayer.setGeoJSON(geojson);
+    mapTooltipsJS.scrollWheelZoom.disable();
 
-  myLayer.setGeoJSON(geojson);
-  mapTooltipsJS.scrollWheelZoom.disable();
+    var params = {
+      'start_lat': {{start_lat}},
+      'start_lng': {{start_lng}},
+      'end_lat': {{end_lat}},
+      'end_lng': {{end_lng}},
+    };
 
-  var params = {
-    'start_lat': {{start_lat}},
-    'start_lng': {{start_lng}},
-    'end_lat': {{end_lat}},
-    'end_lng': {{end_lng}},
-  };
+    function showUber(results) {
+      $('#myModal').modal('hide');
 
-  function showUber(results) {
-    $('#myModal').modal('hide');
+      $('#trigger').removeClass("btn btn-info btn-lg btn-block")
+                   .addClass("btn btn-success btn-lg btn-block")
+                   .attr("disabled", true)
+                   .html("Uber called!");
+    };
 
-    $('#trigger').removeClass("btn btn-info btn-lg btn-block")
-                 .addClass("btn btn-success btn-lg btn-block")
-                 .attr("disabled", true)
-                 .html("Uber called!");
-  };
+    function getUberJson() {
+      $.post('/request_uber', params, showUber);
+    };
 
-  function getUberJson() {
-    $.post('/request_uber', params, showUber);
-  };
+    $('#map-tooltips-js').on('click', '#trigger', function() {
+      $('#myModal').modal('show');
+      $('#confirm').on('click', getUberJson);
+    });
 
-  $('#map-tooltips-js').on('click', '#trigger', function() {
-    $('#myModal').modal('show');
-    $('#confirm').on('click', getUberJson);
-
-  });
-
-</script>
+  </script>
 </body>
 </html>
 
