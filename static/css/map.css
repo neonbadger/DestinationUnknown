@@ -26,8 +26,8 @@ body {
 }
 
 .container {
-    background: rgba(253, 119, 92, 0.80);
     background-color: #B0B0B0;
+    background: rgba(253, 119, 92, 0.80);
     color: #241C04;
     position:relative;
     z-index: 1;
