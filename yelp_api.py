@@ -6,7 +6,7 @@ from yelp.client import Client
 from yelp.oauth1_authenticator import Oauth1Authenticator
 
 
-with io.open('config_secret.json') as cred:
+with io.open('config_yelp_secret.json') as cred:
     creds = json.load(cred)
     auth = Oauth1Authenticator(**creds)
     yelp_client = Client(auth)

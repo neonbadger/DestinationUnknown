@@ -13,7 +13,7 @@ from utils import import_app_credentials
 from utils import import_oauth2_credentials
 
 from yelp_api import yelp_random_pick
-from twilio_test import sendUberText
+from twilio_api import send_uber_text
 
 from geopy.geocoders import Nominatim
 from geopy.distance import vincenty
@@ -259,7 +259,7 @@ def request_uber():
 
     get_ride = uber_client.update_sandbox_ride(ride_id, 'accepted')
 
-    sendUberText();
+    send_uber_text();
 
     return jsonify(ride_details)
 
