@@ -1,0 +1,7 @@
+client_id: INSERT_CLIENT_ID_HERE
+client_secret: INSERT_CLIENT_SECRET_HERE
+redirect_url: INSERT_REDIRECT_URL_HERE
+scopes:
+    - profile
+    - history
+    - request
