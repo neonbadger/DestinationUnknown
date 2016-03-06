@@ -1,0 +1,514 @@
+<!doctype html>
+<meta charset="utf-8">
+<html>
+<head>
+    <title>Destination ? Stats</title>
+</head>
+<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="http://www.d3plus.org/js/d3.js"></script>
+<!-- <script src="http://www.d3plus.org/js/d3plus.js"></script> -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="../static/css/d3.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<body>
+
+    <h1>View Your Stats</h1>
+
+    <!-- Sticker -->
+    <div class="container wrapper">
+      <div id="Awesome" class="anim750">
+        <div class="reveal circle_wrapper">
+          <div class="circle">My Inside Out</div>
+        </div>
+                  
+        <div class="sticky anim750">
+          <div class="front circle_wrapper anim750">
+            <div class="circle anim750"></div>
+          </div>
+        </div>
+        
+        <h4>Show me</h4></br>
+                  
+        <div class="sticky anim750">
+          <div class="back circle_wrapper anim750">
+            <div class="circle anim750"></div>
+          </div>
+        </div>                 
+    </div>
+
+
+    <!-- Stats Board -->
+    <div class="wrapper">
+        <div class="counter col_third">
+          <i class="fa fa-smile-o fa-2x"></i>
+          <h2 class="timer count-title" id="count-number" data-to="{{curious_stat}}" data-speed="1500"></h2>
+           <p class="count-text ">Times x Curious</p>
+        </div>
+
+        <div class="counter col_third">
+          <i class="fa fa-rocket fa-2x"></i>
+          <h2 class="timer count-title" id="count-number" data-to="{{bold_stat}}" data-speed="1500"></h2>
+          <p class="count-text ">Times x Bold</p>
+        </div>
+
+        <div class="counter col_third end">
+          <i class="fa fa-taxi fa-2x"></i>
+          <h2 class="timer count-title" id="count-number" data-to="{{uber_miles}}" data-speed="1500"></h2>
+          <p class="count-text ">Miles x Uber Awesome</p>
+        </div>
+    </div>
+      
+    <!-- <div class="row"> -->
+      <div class="wrapper">
+        <div class="col-xs-12 col-md-12 counter">
+          <p class="question">Which celebrities are you made of?</p>
+          <div class="donut-chart"></div>
+        </div>
+        <div class="col-xs-12 col-md-12 counter">
+          <p class="question">What does your mood say about your event preference?</a></p>
+          <div class="chart2"></div>
+        </div>
+<!--         <div class="col-xs-12 col-md-12 counter">
+          <p class="question">When are you feeling the boldest and taking the extra mile?</a></p>
+          
+        </div>
+        <div class="chart3 static-chart"></div> -->
+      </div>
+    </div>
+<!-- </div> -->
+
+</body>
+<script type="text/javascript">
+
+    // jQuery Countup
+    (function ($) {
+      $.fn.countTo = function (options) {
+        options = options || {};
+        
+        return $(this).each(function () {
+          // set options for current element
+          var settings = $.extend({}, $.fn.countTo.defaults, {
+            from:            $(this).data('from'),
+            to:              $(this).data('to'),
+            speed:           $(this).data('speed'),
+            refreshInterval: $(this).data('refresh-interval'),
+            decimals:        $(this).data('decimals')
+          }, options);
+          
+          // how many times to update the value, and how much to increment the value on each update
+          var loops = Math.ceil(settings.speed / settings.refreshInterval),
+            increment = (settings.to - settings.from) / loops;
+          
+          // references & variables that will change with each update
+          var self = this,
+            $self = $(this),
+            loopCount = 0,
+            value = settings.from,
+            data = $self.data('countTo') || {};
+          
+          $self.data('countTo', data);
+          
+          // if an existing interval can be found, clear it first
+          if (data.interval) {
+            clearInterval(data.interval);
+          }
+          data.interval = setInterval(updateTimer, settings.refreshInterval);
+          
+          // initialize the element with the starting value
+          render(value);
+          
+          function updateTimer() {
+            value += increment;
+            loopCount++;
+            
+            render(value);
+            
+            if (typeof(settings.onUpdate) == 'function') {
+              settings.onUpdate.call(self, value);
+            }
+            
+            if (loopCount >= loops) {
+              // remove the interval
+              $self.removeData('countTo');
+              clearInterval(data.interval);
+              value = settings.to;
+              
+              if (typeof(settings.onComplete) == 'function') {
+                settings.onComplete.call(self, value);
+              }
+            }
+          }
+          
+          function render(value) {
+            var formattedValue = settings.formatter.call(self, value, settings);
+            $self.html(formattedValue);
+          }
+        });
+      };
+      
+      $.fn.countTo.defaults = {
+        from: 0,               // the number the element should start at
+        to: 0,                 // the number the element should end at
+        speed: 1000,           // how long it should take to count between the target numbers
+        refreshInterval: 100,  // how often the element should be updated
+        decimals: 0,           // the number of decimal places to show
+        formatter: formatter,  // handler for formatting the value before rendering
+        onUpdate: null,        // callback method for every time the element is updated
+        onComplete: null       // callback method for when the element finishes updating
+      };
+      
+      function formatter(value, settings) {
+        return value.toFixed(settings.decimals);
+      }
+    }($));
+
+    $(function ($) {
+      $('#count-number').data('countToOptions', {
+      formatter: function (value, options) {
+        return value.toFixed(options.decimals).replace(/\B(?=(?:\d{3})+(?!\d))/g, ',');
+      }
+      });
+      
+      // start all the timers
+      $('.timer').each(count);  
+      
+      function count(options) {
+      var $this = $(this);
+      options = $.extend({}, options || {}, $this.data('countToOptions') || {});
+      $this.countTo(options);
+      }
+    });
+
+    // Donut Chart
+    var dataset = [
+      { label: 'Tswift', count: 25, enabled: true }, 
+      { label: 'Khaleesi', count: 22, enabled: true },
+      { label: 'Sally Ride', count: 10, enabled: true },
+      { label: 'Kimye', count:15 , enabled: true },
+      { label: 'Serena', count: 9, enabled: true },
+      { label: 'Roger', count: 3, enabled: true },
+      { label: 'Buzz', count: 1, enabled: true }
+    ];
+
+    var svgWidth  = 350,
+        svgHeight = 350,
+        radius = Math.min(svgWidth, svgHeight) / 2,
+        donutWidth = 75;
+
+    var color = d3.scale.category10();    
+ 
+    var svg = d3.select('.donut-chart')
+                .append('svg')
+                  .attr('width', svgWidth)
+                  .attr('height', svgHeight)
+                .append('g')
+                  .attr("class", "container")
+                  .attr('transform', 'translate(' + (svgWidth / 2) +  ',' + (svgHeight / 2) + ')'); 
+
+
+    // Define the radius
+    var arc = d3.svg.arc()
+                    .innerRadius(radius - donutWidth)  // Make PIE chart a Donut
+                    .outerRadius(radius);
+
+
+
+    // Define the angles
+    var pie = d3.layout.pie()
+                .value(function(d) {
+                  return d.count;
+                })
+                .sort(null);
+
+
+    // Define the Tooltip
+    var tooltip = d3.select('.donut-chart')            
+                    .append('div')
+                      .attr('class', 'tooltip');
+
+
+    tooltip.append('div')
+      .attr('class', 'label');
+
+    tooltip.append('div')
+      .attr('class', 'count');
+
+    tooltip.append('div')
+      .attr('class', 'percent');
+     
+
+
+    // Define the PIE chart          
+    var path = svg.selectAll('path')
+                  .data(pie(dataset))
+                  .enter()
+                  .append('path')
+                  .attr('d', arc)
+                  .attr('fill', function(d, i) { 
+                    return color(d.data.label);
+                  })
+                  .each(function(d) { this._current = d; });
+
+
+    path.on('mouseover', function(d) {
+      var total = d3.sum(dataset.map(function(d) {
+        return d.count;
+        // return (d.enabled) ? d.count : 0;
+      }));
+
+      var percent = Math.round(1000 * d.data.count / total) / 10;
+
+      tooltip.select('.label').html(d.data.label);
+
+      tooltip.select('.count').html(d.data.count); 
+
+      tooltip.select('.percent').html(percent + '%'); 
+
+      tooltip.style('display', 'block');
+    });
+
+    path.on('mouseout', function() {
+          tooltip.style('display', 'none');
+        });  
+  
+
+
+    // Define the Legend
+    var legendRectSize = 18,
+        legendSpacing  = 4;              
+
+
+    var legend = svg.selectAll('.legend')
+                    .data(color.domain())
+                    .enter()
+                    .append('g')
+                      .attr('class', 'legend')
+                      .attr('transform', function(d, i) {
+
+                        var height = legendRectSize + legendSpacing,
+                            offset = height * color.domain().length / 2,
+                            horz   = -2 * legendRectSize,
+                            vert   = i * height - offset;
+                        return 'translate(' + horz + ',' + vert + ')';
+
+                      });
+
+    // Legend Content
+    legend.append('rect')
+            .attr('width', legendRectSize)
+            .attr('height', legendRectSize)
+            .style('fill', color)
+            .style('stroke', color)
+            .on('click', function(label) {
+              var rect = d3.select(this);
+              var enabled = true;
+              var totalEnabled = d3.sum(dataset.map(function(d) {
+                return (d.enabled) ? 1 : 0;
+              }));
+              
+              if (rect.attr('class') === 'disabled') {
+                rect.attr('class', '');
+              } else {
+                if (totalEnabled < 2) return;
+                rect.attr('class', 'disabled');
+                enabled = false;
+              }
+
+              pie.value(function(d) {
+                if (d.label === label) d.enabled = enabled;
+                return (d.enabled) ? d.count : 0;
+              });
+
+              path = path.data(pie(dataset));
+
+              path.transition()
+                .duration(750)
+                .attrTween('d', function(d) {
+                  var interpolate = d3.interpolate(this._current, d);
+                  this._current = interpolate(0);
+                  return function(t) {
+                    return arc(interpolate(t));
+                  };
+                });
+
+            });
+
+    legend.append('text')
+            .attr('x', legendRectSize + legendSpacing)
+            .attr('y', legendRectSize - legendSpacing)
+            .text(function(d) { return d; });  
+
+
+    // Chord Chart
+        var margin  = {top: 50, right: 10, bottom: 10, left: 50},
+        width       = 960 - margin.left - margin.right,
+        height      = 600 - margin.top  - margin.bottom,
+        innerRadius = Math.min(width, height) * .35,
+        outerRadius = innerRadius * 1.1;
+
+    var svg = d3.select(".chart2").append("svg")
+        .attr("width",  width  + margin.left + margin.right)
+        .attr("height", height + margin.top  + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+        .append("g")
+        .attr("class", "chordgraph")
+        .attr("transform", "translate(" + width/2 + "," + height/2 + ")");
+
+    d3.csv("static/event.csv", function(d){
+
+        /*
+         * IMPORTANT! Specify your first column of data here (see example data)
+         *
+         */
+        var firstColumn = "first_column";
+
+        //store coloumn names
+        var fc = d.map(function(d){ return d[firstColumn]; }),
+            fo = fc.slice(0),
+            maxtrix_size = (Object.keys(d[0]).length - 1) + fc.length,
+            matrix  = [];
+
+        //Create an empty square matrix of zero placeholders, the size of the ata
+        for(var i=0; i < maxtrix_size; i++){
+            matrix.push(new Array(maxtrix_size+1).join('0').split('').map(parseFloat));
+        }
+
+        //go through the data and convert all to numbers except "first_column"
+        for(var i=0; i < d.length; i++){
+
+            var j = d.length;//counter
+
+            for(var prop in d[i]){
+                if(prop != firstColumn){
+                    fc.push(prop);
+                    matrix[i][j] = +d[i][prop];
+                    matrix[j][i] = +d[i][prop];
+                    j++;
+                }
+            }
+        }
+
+        var chord = d3.layout.chord()
+            .padding(.1)
+            .sortSubgroups(d3.descending)
+            .matrix(matrix);
+
+        var chordgroups = chord.groups()
+            .map(function(d){ d.angle = (d.startAngle + d.endAngle)/2; return d; });
+
+        var arc = d3.svg.arc()
+            .innerRadius(innerRadius)
+            .outerRadius(outerRadius);
+
+        var fill = d3.scale.category20();
+
+        svg.selectAll("path")
+            .data(chord.groups)
+            .enter()
+            .append("path")
+            .style("fill", function(d, i){ return (d.index+1) > fo.length ? fill(d.index): "#ccc";})
+            .style("stroke", function(d, i) { return "#000"; })
+            .style("cursor", "pointer")
+            .attr("d", arc)
+            .on("mouseover", function(d, i){
+                chords.classed("fade", function(d){
+                    return d.source.index != i && d.target.index != i;
+                  })
+            });
+
+
+        var chords = svg.append("g")
+            .attr("class", "chord")
+            .selectAll("path")
+            .data(chord.chords)
+            .enter()
+            .append("path")
+            //set the starting node. Change index from zero here.
+            //to start with a target dataset, change d.source.index to d.target.index
+            .classed("fade", function(d,i){return d.source.index == 0 ? false : true;})
+            .attr("d", d3.svg.chord().radius(innerRadius))
+            .style("fill", function(d) { return fill(d.source.subindex); })
+            .style("stroke", function(d){ return "#000";});
+
+        svg.selectAll(".text")
+            .data(chordgroups)
+            .enter()
+            .append("text")
+            .attr("class", "text")
+            .attr("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
+            .attr("transform", function(d){
+
+                //rotate each label around the circle           
+                return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")" + 
+                       "translate(" + (outerRadius + 10) + ")" +
+                       (d.angle > Math.PI ? "rotate(180)" : "");
+
+            })
+            .text(function(d,i){
+                //set the text content
+                return fc[i];
+            })
+            .style({
+                "font-family":"sans-serif",
+                "font-size"  :"12px"
+            })
+        });
+
+
+// //Static Network
+
+// var sample_data = [
+//     {"name": "Westside Chiropractic", "distance": 2, "alter ego": "taylor swift", "mood": "strange"},
+//     {"name": "Hey, Cookie", "distance": 3, "alter ego": "serena williams", "mood": "strange"},
+//     {"name": "Honeybee Acupuncture", "distance": 4, "alter ego": "buzz aldrin", "mood": "empty"},
+//     {"name": "Serenity Day Spa", "distance": 5, "alter ego": "kimye", "mood": "strange"},
+//     {"name": "Laser Tag", "distance": 4, "alter ego": "serena williams", "mood": "strange"},
+//     {"name": "Green Zen Center", "distance": 4, "alter ego": "buzz aldrin", "mood": "strange"},
+//     {"name": "Arrow Salon", "distance": 3, "alter ego": "buzz aldrin", "mood": "strange"},
+//     {"name": "Belgian Waffles", "distance": 2, "alter ego": "kimye", "mood": "strange"},
+//     {"name": "Alum Rock", "distance": 5, "alter ego": "Sally Ride", "mood": "adventurous"},
+//     {"name": "Greek Spot", "distance": 4, "alter ego": "Kimye", "mood": "adventurous"}
+//   ]
+//   // create list of node positions
+//   var positions = [
+//     {"name": "Westside Chiropractic", "x": 10, "y": 15},
+//     {"name": "Hey, Cookie", "x": 12, "y": 24},
+//     {"name": "Honeybee Acupuncture", "x": 16, "y": 18},
+//     {"name": "Serenity Day Spa", "x": 26, "y": 21},
+//     {"name": "Laser Tag", "x": 13, "y": 4},
+//     {"name": "Green Zen Center", "x": 31, "y": 13},
+//     {"name": "Arrow Salon", "x": 19, "y": 8},
+//     {"name": "Belgian Waffles", "x": 24, "y": 11},
+//     {"name": "Alum Rock", "x": 20, "y": 15},
+//     {"name": "Greek Spot", "x": 12, "y": 10}
+//   ]
+//   // create list of node connections
+//   var connections = [
+//     {"source": "Westside Chiropractic", "target": "Serenity Day Spa"},
+//     {"source": "Serenity Day Spa", "target": "Green Zen Center"},
+//     {"source": "Serenity Day Spa", "target": "Arrow Salon"},
+//     {"source": "Green Zen Center", "target": "Serenity Day Spa"},
+//     {"source": "Green Zen Center", "target": "Honeybee Acupuncture"},
+//     {"source": "Hey, Cookie", "target": "Belgian Waffles"},
+//     {"source": "Hey, Cookie", "target": "Greek Spot"},
+//     {"source": "Laser Tag", "target": "Alum Rock"},
+//   ]
+//   // instantiate d3plus
+//   var visualization = d3plus.viz()
+//     .container(".chart3")  // container DIV to hold the visualization
+//     .type("network")    // visualization type
+//     .data(sample_data)  // sample dataset to attach to nodes
+//     .nodes(positions)   // x and y position of nodes
+//     .edges(connections) // list of node connections
+//     .size("distance")       // key to size the nodes
+//     .id("name")         // key for which our data is unique on
+//     .tooltip(["name", "distance", "alter ego", "mood"])
+//     .draw()             // finally, draw the visualization!
+
+
+</script>
+</html>
