@@ -90,17 +90,17 @@ class FlaskTests(unittest.TestCase):
         self.assertIn('text/html', result.headers['Content-Type'])
         self.assertIn("<span class='special'>Find Your Destination Unknown</span>", result.data)
 
-    # def test_demo(self):
+    def test_demo(self):
 
-    #     result = self.client.get('/demo')
-    #     self.assertEqual(result.status_code, 200)
-    #     self.assertIn('text/html', result.headers['Content-Type'])
+        result = self.client.get('/demo')
+        self.assertEqual(result.status_code, 200)
+        self.assertIn('text/html', result.headers['Content-Type'])
 
-    # def test_stats(self):
+    def test_stats(self):
 
-    #     result = self.client.get('/show_stats')
-    #     self.assertEqual(result.status_code, 200)
-    #     self.assertIn('View Your Stats', result.data)
+        result = self.client.get('/show_stats')
+        self.assertEqual(result.status_code, 200)
+        self.assertIn('View Your Stats', result.data)
 
 
 
@@ -126,10 +126,6 @@ class TestUberLogin(unittest.TestCase):
         expected_url = "https://login.uber.com/login"
         
         self.assertEqual(expected_url, redirect_url)
-
-        
-
-
 
 if __name__ == '__main__':
 

@@ -6,7 +6,6 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
-
 class User(db.Model):
     """User logged in through Uber."""
 
@@ -94,15 +93,3 @@ if __name__ == "__main__":
     from server import app
     connect_to_db(app)
     print "Connected to DB."
-
-
-
-
-
-
-
-
-
-
-
-
