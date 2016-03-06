@@ -1,0 +1,6 @@
+{
+    "consumer_key": "INSERT_CONSUMER_KEY_HERE",
+    "consumer_secret": "INSERT_CONSUMER_SECRET_HERE",
+    "token": "INSERT_TOKEN_HERE",
+    "token_secret": "INSERT_TOKEN_SECRET_HERE"
+}
