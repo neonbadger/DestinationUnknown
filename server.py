@@ -1,5 +1,3 @@
-# from yaml import safe_dump
-
 from flask import Flask
 from flask import session as sesh
 from flask import redirect
@@ -7,17 +5,12 @@ from flask import request, url_for
 from flask import render_template
 from flask import jsonify
 
-# from jinja2 import StrictUndefined
-# from flask_debugtoolbar import DebugToolbarExtension
-
 from uber_rides.session import Session
 from uber_rides.client import UberRidesClient
 from uber_rides.auth import AuthorizationCodeGrant
 from uber_rides.session import OAuth2Credential
 from utils import import_app_credentials
 from utils import import_oauth2_credentials
-
-# from rauth import OAuth2Service
 
 from yelp_api import yelp_random_pick
 from twilio_test import sendUberText
@@ -31,25 +24,17 @@ from sqlalchemy import func
 import requests
 import os
 
-# import httplib
-# import urllib
-# import urllib2
-
-# from datetime import datetime
-# import parsedatetime as pdt
-# import time
-
-# import pdb
 
 app = Flask(__name__)
 app.requests_session = requests.Session()
 app.secret_key = os.urandom(24)
 
+
 geolocator = Nominatim()
 
-# app.jinja_env.undefined = StrictUndefined
 
-# import app credentials imported from the configuration file.
+# Step 1 in 3-legged OAuth handshake:
+# Prepare OAuth 2.0 service that is used to make requests
 credentials = import_app_credentials()
 
 auth_flow = AuthorizationCodeGrant(
@@ -59,26 +44,31 @@ auth_flow = AuthorizationCodeGrant(
     credentials.get('redirect_url'),
 )
 
+# Generate authorization url
 auth_url = auth_flow.get_authorization_url()
+
+
 
 @app.route('/')
 def index():
-    """Show landing page."""
+    """Show homepage."""
 
     return render_template('home.html')
 
+
+
 @app.route('/authenticate')
 def login():
-    """ Check if the user is logged in or not. OAuth2.0"""
-
-    # for debugging
-    print auth_url
+    """Redirect to https://login.uber.com/login"""
 
     return redirect(auth_url)
 
+
+
 @app.route('/redirect-uri', methods=['GET'])
 def redirect_uri():
-    """Implement a callback to obtain the access token."""
+    """Step 2 & 3 in 3-legged Oauth handshake. Implement callback 
+    at redirect_uri to exchange a code to obtain access token"""
 
     parameters = {
         'redirect_uri': 'http://localhost:5000/redirect-uri',
@@ -87,6 +77,7 @@ def redirect_uri():
     }
 
     client_id = credentials.get('client_id')
+    
     client_secret = credentials.get('client_secret')
 
     response = requests.post(
@@ -98,22 +89,20 @@ def redirect_uri():
         data = parameters
     )
 
+    # Extract access token and store in session
     sesh['access_token'] = response.json().get('access_token')
-    print 'access_token:', sesh['access_token']
-    # access_token = sesh['access_token']
-    
+
     return redirect('/search')
+
 
 
 @app.route('/search')
 def search():
+    """Show search form and create user object if not in database"""
     
     if 'access_token' not in sesh:
         return redirect(url_for('index'))
-    else:   
-        # return """Works!!!!"""
-        print sesh['access_token']
-
+    else:
         credentials2 = import_oauth2_credentials()
     
         oauth2credential = OAuth2Credential(
@@ -125,12 +114,11 @@ def search():
                     redirect_url=credentials2.get('redirect_url'),
                     client_secret=credentials2.get('client_secret'),
                     refresh_token=credentials2.get('refresh_token'),
-                )
+                    )
 
         uber_session = Session(oauth2credential=oauth2credential)
-        uber_client = UberRidesClient(uber_session, sandbox_mode=True)
 
-        print uber_client.get_user_profile().json
+        uber_client = UberRidesClient(uber_session, sandbox_mode=True)
 
         user_profile = uber_client.get_user_profile().json
 
@@ -142,21 +130,18 @@ def search():
                         'img_url': user_profile.get('picture')
         }
 
-        print sesh['user']
+        # print sesh['user']
 
         if db.session.query(User).filter(User.email == user_profile['email']).count() == 0:
             user = User(first_name=user_profile.get('first_name'),
                         last_name= user_profile.get('last_name'),
                         img_url=user_profile.get('picture'),
                         email=user_profile.get('email'))
+
             db.session.add(user)
             db.session.commit()
-        else:
-            first_name = User.query.filter(User.email == user_profile['email']).first().first_name
-            print "Hello!", first_name
 
-
-        return render_template('search.html', 
+        return render_template('search.html',
                                 first_name=sesh['user'].get('first_name'),
                                 img_url=sesh['user'].get('img_url'),
                                 )
@@ -165,7 +150,7 @@ def search():
 
 @app.route('/yelp_result', methods = ['POST'])
 def generate_yelp():
-    """Return top search result without identifying info"""
+    """Return top-rated Yelp search result and create search object in database"""
 
     mood = request.form.get('mood')
     adjective = request.form.get('adjective')
@@ -189,32 +174,27 @@ def generate_yelp():
     sesh['user']['phone'] = phone
     user = User.query.filter(User.email == sesh['user'].get('email')).first()
     user_id = user.id
+
     if user.phone == None:
         user.phone = phone
         db.session.commit()
 
     search = Search(user_id=user_id,
-                mood=mood,
-                adjective=adjective,
-                alter_ego=alter_ego,
-                event=event,
-                location=location,
-                start_lat=start_lat,
-                start_lng=start_lng,
-                destination=biz.name,
-                end_lat=end_lat,
-                end_lng=end_lng,
-                mileage=distance,
-                )
+                    mood=mood,
+                    adjective=adjective,
+                    alter_ego=alter_ego,
+                    event=event,
+                    location=location,
+                    start_lat=start_lat,
+                    start_lng=start_lng,
+                    destination=biz.name,
+                    end_lat=end_lat,
+                    end_lng=end_lng,
+                    mileage=distance,
+                    )
+
     db.session.add(search)
     db.session.commit()
-
-    print ("yelp stuff:", mood, adjective, alter_ego, location, start, start_lat, start_lng,
-          event, city, phone, biz.categories)
-    print ('end stuff:', end_lat, end_lng)
-    # if refresh page on yelp search, access_token is lost
-    print "access_token222", sesh.get('access_token')
-    print sesh['user']
 
     return render_template('yelp_result.html', biz=biz,
                                                review=biz.snippet_text.replace('\n', ' '),
@@ -227,21 +207,11 @@ def generate_yelp():
                                                end_lng=end_lng,
                                                )
 
-# print out access token for debugging
-@app.route('/demo', methods=['GET'])
-def check_access_token():
-    """Demo.html is a template that calls the other routes in this example."""
-    
-    token = sesh['access_token']
-    print "access_token demo page1", sesh.get('access_token')
-    print "access_token demo page", token
-
-    return render_template('demo.html', token=token)
 
 
 @app.route('/request_uber', methods=['POST', 'GET'])
 def request_uber():
-    """ """
+    """Make sandbox Uber ride request"""
 
     search = Search.query.order_by(Search.date.desc()).first()
     search.uber_request = True
@@ -260,29 +230,15 @@ def request_uber():
                 refresh_token=credentials2.get('refresh_token'),
             )
 
-    # pdb.set_trace()
-
     uber_session = Session(oauth2credential=oauth2credential)
 
     uber_client = UberRidesClient(uber_session, sandbox_mode=True)
 
-    # receive data from the Ajax call
+    # receive data from Ajax call
     start_lat = request.form.get('start_lat')
     start_lng = request.form.get('start_lng')
     end_lat = request.form.get('end_lat')
     end_lng = request.form.get('end_lng')
-
-    print start_lat, start_lng, end_lat, end_lng
-
-    # num_1 = float(start_lat)
-    # num_2 = float(start_lng)
-    # num_3 = float(end_lat)
-    # num_4 = float(end_lng)
-
-    # print isinstance(num_1, float)
-    # print isinstance(num_2, float)
-    # print isinstance(num_3, float)
-    # print isinstance(num_4, float)
 
     response = uber_client.get_products(37.3688301, -122.0363495)
 
@@ -290,58 +246,60 @@ def request_uber():
 
     product_id = products[0].get('product_id')
 
-    # print product_id
-    # print "response", response.json
-    # print uber_client.get_user_profile().json
-    # print uber_client.get_user_activity().json
-
     # make sandbox calls
     ride_request = uber_client.request_ride(product_id=product_id, 
                                             start_latitude=37.3688301, 
                                             start_longitude=-122.0363495, 
                                             end_latitude=37.8003415, 
                                             end_longitude=-122.4331332)
-    
-
+   
     ride_details = ride_request.json
-
-    print "ride details:", ride_details
-    
+  
     ride_id = ride_details.get('request_id')
 
     get_ride = uber_client.update_sandbox_ride(ride_id, 'accepted')
-
-    print 'get ride', get_ride
 
     sendUberText();
 
     return jsonify(ride_details)
 
+
+
 @app.route('/show_stats')
 def show_stats():
+    """Show user's boldness stats and D3 graphs"""
 
     bold_stat = Search.query.filter_by(uber_request = 'T').count()
     curious_stat = Search.query.filter_by(uber_request = 'F').count()
     uber_miles = db.session.query(func.sum(Search.mileage)).filter(Search.uber_request == 'T').scalar()
+
     moods = db.session.query(func.count(Search.mood), Search.mood).group_by(Search.mood).all()
     alter_ego = db.session.query(func.count(Search.alter_ego), Search.alter_ego).group_by(Search.alter_ego).all()
 
-    print bold_stat, curious_stat, uber_miles, moods, alter_ego
+    # print moods, alter_ego
 
-    return render_template("stats.html", bold_stat=bold_stat,
-                                      curious_stat=curious_stat,
-                                      uber_miles=uber_miles)
+    return render_template("stats.html", 
+                            bold_stat=bold_stat,
+                            curious_stat=curious_stat,
+                            uber_miles=uber_miles)
+
+
+
+@app.route('/check_token', methods=['GET'])
+def check_access_token():
+    """A test route that checks whether access token is fresh."""
+    
+    token = sesh['access_token']
+
+    return render_template('check_token.html', token=token)
+
+
 
 if __name__ == "__main__":
-    
-    # credentials = import_app_credentials()
 
     app.debug = True
 
     connect_to_db(app)
-
-    # Use the DebugToolbar
-    # DebugToolbarExtension(app)
 
     db.create_all()
     db.session.commit()
