@@ -252,9 +252,9 @@ def request_uber():
                                             start_longitude=-122.0363495, 
                                             end_latitude=37.8003415, 
                                             end_longitude=-122.4331332)
-   
+ 
     ride_details = ride_request.json
-  
+
     ride_id = ride_details.get('request_id')
 
     get_ride = uber_client.update_sandbox_ride(ride_id, 'accepted')
@@ -269,26 +269,29 @@ def request_uber():
 def show_stats():
     """Show user's boldness stats and D3 graphs"""
 
-    bold_stat = Search.query.filter_by(uber_request = 'T').count()
-    curious_stat = Search.query.filter_by(uber_request = 'F').count()
-    uber_miles = db.session.query(func.sum(Search.mileage)).filter(Search.uber_request == 'T').scalar()
+    if 'access_token' not in sesh:
+        return redirect(url_for('index'))
+    else:
+        bold_stat = Search.query.filter_by(uber_request = 'T').count()
+        curious_stat = Search.query.filter_by(uber_request = 'F').count()
+        uber_miles = db.session.query(func.sum(Search.mileage)).filter(Search.uber_request == 'T').scalar()
 
-    moods = db.session.query(func.count(Search.mood), Search.mood).group_by(Search.mood).all()
-    alter_ego = db.session.query(func.count(Search.alter_ego), Search.alter_ego).group_by(Search.alter_ego).all()
+        moods = db.session.query(func.count(Search.mood), Search.mood).group_by(Search.mood).all()
+        alter_ego = db.session.query(func.count(Search.alter_ego), Search.alter_ego).group_by(Search.alter_ego).all()
 
-    # print moods, alter_ego
+        # print moods, alter_ego
 
-    return render_template("stats.html", 
-                            bold_stat=bold_stat,
-                            curious_stat=curious_stat,
-                            uber_miles=uber_miles)
+        return render_template("stats.html", 
+                                bold_stat=bold_stat,
+                                curious_stat=curious_stat,
+                                uber_miles=uber_miles)
 
 
 
 @app.route('/check_token', methods=['GET'])
 def check_access_token():
     """A test route that checks whether access token is fresh."""
-    
+   
     token = sesh['access_token']
 
     return render_template('check_token.html', token=token)
