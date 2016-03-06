@@ -11,7 +11,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script src="http://www.d3plus.org/js/d3.js"></script>
   </head>
 
   <body>
@@ -179,13 +178,13 @@
       // Donut Chart
       var dataset = [
         { label: 'Daenerys', count: 55, enabled: true },
-        { label: 'Ziggy', count: 25, enabled: true }, 
-        { label: 'Sally R.', count: 10, enabled: true },
+        { label: 'Ziggy', count: 35, enabled: true }, 
+        { label: 'Sally R.', count: 23, enabled: true },
         { label: 'Buzz A.', count: 8, enabled: true },
-        { label: 'Serena W.', count: 9, enabled: true },
+        { label: 'Serena W.', count: 19, enabled: true },
         { label: 'Roger F.', count: 4, enabled: true },
-        { label: 'T-Swift', count: 45, enabled: true }, 
-        { label: 'Kimye', count:35 , enabled: true },
+        { label: 'T-Swift', count: 50, enabled: true }, 
+        { label: 'Kimye', count: 45, enabled: true },
       ];
 
       var svgWidth  = 400,
@@ -243,9 +242,9 @@
 
 
       path.on('mouseover', function(d) {
+        
         var total = d3.sum(dataset.map(function(d) {
-          return d.count;
-          // return (d.enabled) ? d.count : 0;
+          return (d.enabled) ? d.count : 0;
         }));
 
         var percent = Math.round(1000 * d.data.count / total) / 10;
@@ -409,7 +408,6 @@
               .enter()
               .append("path")
               //set the starting node. Change index from zero here.
-              //to start with a target dataset, change d.source.index to d.target.index
               .classed("fade", function(d,i){return d.source.index == 0 ? false : true;})
               .attr("d", d3.svg.chord().radius(innerRadius))
               .style("fill", function(d) { return fill(d.source.subindex); })

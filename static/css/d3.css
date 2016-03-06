@@ -54,9 +54,10 @@ text {
 .end { 
   margin-right: 0 !important; 
 }
-/* Column Grid End*/
 
-/* jQuery Count Cards*/
+
+/* jQuery Flipping Countup*/
+
 .wrapper { 
   width: 980px; 
   margin: 30px auto; 
@@ -100,11 +101,12 @@ text {
   text-align: center;
 }
 
+/* Sticky Note */
+
 .anim750{
   transition: all 750ms ease-in-out;
 }
 
-/* Sticky Note */
 #Awesome{
   position: relative;
   width: 180px;
@@ -225,9 +227,68 @@ text {
   background-color: #e2d439;
   background-position: 0 100px;
 }
-/* Sticky Note End*/
+
+/* Donut Chart */
+
+.donut-chart {
+  padding-top: 2%;
+}
+
+rect {
+    stroke-width: 2;
+    cursor: pointer;
+  }
+
+rect.disabled {
+  fill: transparent !important;
+}
+
+.donut-chart {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Just for testing  */
+    /*border: 2px solid black;   */
+}
+
+.tooltip--bars {
+  z-index: 100;
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 30%;
+  text-align: center;
+  padding: .7em;
+  background-color: white;
+  box-shadow       : 0 0 5px hsla(0, 0%, 20%, 0.9);
+  color: hsl(0, 0%, 20%);
+  min-width: 45%;
+  max-width: 95%;
+  box-sizing: border-box;
+}
+
+.tooltip--bars .value {
+  font-weight: bold;
+}
+
+.tooltip {
+  display    : none;
+  position   : absolute;
+  width      : 80px;
+  top        : 50%;
+  right      : 55%;
+  text-align : center;
+  color      : #333;
+  font-size  : 12px;
+  padding    : 10px;
+  z-index    : 10;
+  background-color : #eee;
+  box-shadow       : 0 0 5px #999999;
+}               
 
 /* Chord Chart*/
+
 path{
   stroke: black;
   stroke-width: .25px;
@@ -236,13 +297,3 @@ path{
 path.fade{
   display: none;
 }
-
-rect {
-  stroke-width: 2;
-  cursor: pointer;
-}
-
-rect.disabled {
-  fill: transparent !important;
-}
-/* Chord Chart End */
