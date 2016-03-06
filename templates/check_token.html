@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        {% if token %}
+        <h1> Congratulations! you have successfully authenticated and your token is: {{token}} </h1>
+        {% else %}
+        <h1> Something went wrong :( </h1>
+        {% endif %}
+    </body>
+</html>
