@@ -1,12 +1,12 @@
-# DESTINATION UNKNOWN
+# DESTINATION UNKNOWN: an Odyssey Web App
 
 **Destination Unknown** is a mischievous roulette mystery trip generator that can sweep you away on a spontaneous adventure. Users can log in with their Uber accounts, compose a story for their ideal escape, and see a top-rated mystery destination unfold on a story-book map. The destination contains just enough information to pique one’s interest but not spoil the surprise. Users can request a ride from Uber directly via Destination Unknown, complete with text message confirmation. Destination Unknown also provides users with insights into their own “Inside Out”: curiosity stats, mood triggers, and celebrity alter-egos. 
 
-As the saying goes -- “*Only the curious have something to find*” -- Destination Unknown will encourage you to embrace a bolder path.
+As the saying goes, “*Only the curious have something to find*.” Destination Unknown will encourage you to embrace a bolder path.
 
-![[https://github.com/neonbadger/DestinationUnknown/blob/master/static/img/question_mark.png]]
+![Destination Unknown Logo](/static/img/question_mark.png "Destination Unknown Logo")
 
-Destination Unknown is designed and developed with love by **Shijie Feng**. You can connect with Shijie on [LinkedIn](https://www.linkedin.com/in/shijiefeng), [Twitter](https://twitter.com/Neon_Badger), and [Medium](https://medium.com/@ShijieF).
+Destination Unknown is created with love by **Shijie Feng**. You can connect with Shijie on [LinkedIn](https://www.linkedin.com/in/shijiefeng), [Twitter](https://twitter.com/Neon_Badger), and [Medium](https://medium.com/@ShijieF).
 
 
 # Table of Contents
@@ -23,7 +23,14 @@ Destination Unknown is designed and developed with love by **Shijie Feng**. You 
 
 ## <a name="technologies"></a>Technologies
 
-**Destination Unknown** is built on a Flask server (written in Python) and uses a PostgreSQL database. The application seamlessly integrates with Uber, Yelp, Mapbox, and Twilio APIs and adopts a modernized UI that supports full-screen video background, natural language form, and fun JavaScript/jQuery/CSS animation effects. While using Destination Unknown, users generate live data written into the database, and the application queries the database and visualizes the information with jQuery and D3.js.
+**Destination Unknown** is built on a Flask server (written in Python) and uses a PostgreSQL database. The application seamlessly integrates with Uber, Yelp, Mapbox, and Twilio APIs and adopts a modernized UI that supports full-screen video background, natural language form, and JavaScript/jQuery/CSS animation effects. While using Destination Unknown, users generate live data, and the application queries the database and visualizes the information with jQuery and D3.js.
+
+Tech Stack:
+* Frontend: JavaScript, [jQuery](https://jquery.com/), [AJAX](http://api.jquery.com/jquery.ajax/), [Jinja2](http://jinja.pocoo.org/docs/dev/), [Bootstrap](http://getbootstrap.com/2.3.2/)
+* Backend: [Python](https://www.python.org/), [Flask](http://flask.pocoo.org/)
+* Database: [Flask - SQLAlchemy](http://flask.pocoo.org/), [PostgreSQL](http://www.postgresql.org/)
+* API: [Uber](https://developer.uber.com/), [Yelp](https://www.yelp.com/developers/documentation/v2/overview), [Mapbox](https://www.mapbox.com/developers/), [Twilio](https://www.twilio.com/docs/api/rest)
+
 
 ## <a name="features"></a>Features
 
@@ -31,16 +38,16 @@ Destination Unknown is designed and developed with love by **Shijie Feng**. You 
 
 The landing page embeds HTML5 video in the background to create a stunning user experience. The video background is supported in all modern browsers (>IE8). For browsers incompatible with HTML5 video, a static full-screen picture is shown instead.
 
-I create and my own video for the background. To make the video background work on the web, you have to host three formats:
+I create and edit my own video for the background. To make the video background work on the web, you have to host three formats:
 * MP4 – a container for H.264 video and AAC audio
 * Ogg – a container for Theora video and Vorbis audio
 * WebM – a container intended primarily for use in the HTML5 video tag
 
 ####Login with Uber
 
-User login is handled through Uber's OAuth 2.0, following the client-side web application flow. 
+User login is handled through Uber's OAuth 2.0, following the client-side web application authorization flow. 
 
-For a user to access Destination Unknown's content and request in-app Uber services, the application needs to get authorization from Uber, the resource owner, and will redirect the user to Uber's Authorization server, where he or she is asked to authenticate (if he or she is not already logged in) and then authorize the requested permissions. After successfully being granted access, the application is redirected to the redirect_uri address, including an access_token that can be used directly by the application to request information or perform operations on behalf of the user, including requesting a ride by Uber. Access_token is then encrypted and stored on the Flask session, and subsequent login will not prompt for the authorization dialog if the user is logged in and has previously approved the same permissions. For more, please see [Uber documentation](https://developer.uber.com/docs/authentication). 
+For a user to access Destination Unknown's content and request in-app Uber services, the application needs to get authorization from Uber and will redirect the user to Uber's Authorization server, where he or she is asked to authenticate (if not already logged in) and then authorize the requested permissions. After successfully being granted access, the application is redirected to the redirect_uri address, including an access_token that can be used directly by the application to request information or perform operations on behalf of the user. Access_token is then encrypted and stored on the Flask session, and the user's subsequent login will not prompt for the authorization dialog if the user is logged in and has previously approved the same permissions. For more, please see [Uber documentation](https://developer.uber.com/docs/authentication).
 
 ####Mischievous User Avatar
 
@@ -48,13 +55,11 @@ After the user successfully logs in through Uber, the application accesses the u
 
 ####Natural Language User Interface
 
-When I signed up for Beats Music (now Apple Music), it asked me to select music genres by completing a sentence ("I'M ____ & FEEL LIKE ____ WITH ____ TO ____"), which I found fun. 
-
-With Destination Unknown, I experimented with this novel UI concept and implemented a Natural Language Form ("NLF"), embedding input fields inside sentences to make filling out a form as engaging as writing a mini story. In addition to asking for the user's current location, desired event type, and preferred destination for business discovery, the form collects the user's feelings at the time of search by asking about mood, self-description, and celebrity alter-ego for data visualization purposes. For more design inspirations on NLF, please visit this [blog post](http://www.jroehm.com/2014/01/ui-pattern-natural-language-form/). 
+I experimented with a novel UI concept and implemented a Natural Language Form ("NLF"), embedding input fields inside sentences to make filling out a form as engaging as writing a mini story. In addition to asking for the user's current location, desired event type, and preferred destination for business discovery, the form collects the user's feelings at the time of search by asking about mood, self-description, and celebrity alter-ego. For more design inspirations on NLF, please visit this [blog post](http://www.jroehm.com/2014/01/ui-pattern-natural-language-form/). 
 
 ####Business Discovery
 
-Destination Unknown uses the Yelp API behind the scene to determine the list of businesses to choose from. Once the user fills out the form and clicks the "Find Destination" button, the application sends the search parameters to Yelp's search endpoint. After Yelp returns business objects in JSON, the application randomly selects one of the highest-rated businesses for the user's consideration, revealing only the business's Yelp ratings, review snippet, and business categories -- just enough information to get you curious and excited!
+Destination Unknown uses the Yelp API behind the scene to determine the list of businesses to choose from. Once the user fills out the form and clicks the "Find Destination" button, the application sends the search parameters to Yelp API's search endpoint. After Yelp returns jsonified business objects, the application randomly selects one of the highest-rated businesses for the user's consideration, revealing only the business's Yelp ratings, review snippet, and business categories -- just enough information to get you curious and excited!
 
 ####Story Book Map
 
@@ -70,11 +75,11 @@ When the user's ride request is successful, the application uses the Twilio SMS 
 
 ####Live User-Generated Data
 
-As the user fills out the form, all the form fields -- including the user's mood, trip description, and alter-ego -- are written into the database, along with the destination generated by the application. When the user requests Uber, the uber_request field is accordingly updated in the database.
+As the user fills out the form, all the form fields -- including the user's mood, trip description, and alter-ego -- are written into the database, along with the destination generated by the application. When the user requests Uber, the uber_request field in the searches table is updated accordingly.
 
 ####Curiosity and Mood Stats Visualization
 
-The application makes SQLAlchemy queries into the database and returns the following data: the number of times the user has been curious and searched for a destination, the number of times the user has been bold and requested uber, and how many miles the user has traveled to Destination Unknown with Uber (in sandbox, at the moment). With jQuery, these stats are shown with a flipping countup animation effect. The user can also see the percentage of times he or she picked the celebrity alter-egos on a D3.js donut chart, and how the user's mood affects the activity choice on a D3.js chord diagram.
+The application makes SQLAlchemy queries into the database and returns the following data: the number of times the user has been curious and searched for a destination, the number of times the user has been bold and requested Uber, and how many miles the user has traveled to Destination Unknown with Uber (in sandbox). With jQuery, these stats are shown with a flipping countup animation effect. The user can also see the percentage of times he or she picked the celebrity alter-egos on a donut chart, and how the user's mood affects the activity choice on a chord diagram, both made with D3.js
 
 
 ## <a name="testing"></a>Testing
