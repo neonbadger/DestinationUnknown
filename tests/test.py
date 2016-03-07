@@ -1,3 +1,5 @@
+"""Test suite for Destination Unknown app"""
+
 import unittest
 from server import app
 from model import db
