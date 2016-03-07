@@ -1,5 +1,6 @@
 *.pyc
 env
 *secret*
+*.yaml
 *.DS_Store
 *.coverage
