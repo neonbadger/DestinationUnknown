@@ -46,7 +46,6 @@ def yelp_random_pick(event, city):
 
     params = {
         'sort': 2,
-        # 'radius_filter': int(radius)*1609.34,
         'category_filter': category_filter
     }
 
