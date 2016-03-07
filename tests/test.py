@@ -1,9 +1,22 @@
 """Test suite for Destination Unknown app"""
 
 import unittest
+import doctest
+import server
 from server import app
 from model import db
 from model import User, Search, Rating
+from twilio_api import convert_to_e164, send_uber_text
+
+
+# Doctest
+def load_tests(loader, tests, ignore):
+    """Run doctests and file-based doctests."""
+
+    tests.addTests(doctest.DocTestSuite(server))
+    return tests
+
+
 
 #Test Database
 class ModelTests(unittest.TestCase):
@@ -75,8 +88,51 @@ class ModelTests(unittest.TestCase):
         db.drop_all()
         print "teardown ran"
 
+
+# Twilio
+class TwilioUnitTestCase(TestCase):
+    """Unit tests on Twilio SMS and phone number conversion"""
+
+    def test_convert_to_e164(self):
+        """Test phone number conversion"""
+
+        self.assertEqual(convert_to_e164('1234567890'), u'+1234567890')
+
+    def test_convert_to_e164_plus(self):
+        """Test phone number conversion with + sign"""
+
+        self.assertEqual(convert_to_e164('+1234567890'), u'+1234567890')
+
+    def test_convert_to_e164_parens(self):
+        """Test phone number conversion with ()"""
+
+        self.assertEqual(convert_to_e164('(123)456-7890'), u'+1234567890')
+
+    def test_convert_to_e164_period(self):
+        """Test phone number conversion with ."""
+
+        self.assertEqual(convert_to_e164('123.456.7890'), u'+1234567890')
+
+    def test_convert_to_e164_dash(self):
+        """Test phone number conversion with -"""
+
+        self.assertEqual(convert_to_e164('123-456-7890'), u'+1234567890')
+
+    def test_send_uber_text(self):
+        """Test SMS with uber ride information"""
+
+        self.assertEqual(send_uber_text('+1203983811'), "success")
+
+    def test_send_uber_text(self):
+        """Test SMS with invalid phone number"""
+
+        self.assertEqual(send_uber_text('+1234567890'), "Error")
+
+
+
 #Test Flask
 class FlaskTests(unittest.TestCase):
+    """Integration tests on Flask server"""
 
     def setUp(self):
         """Set up Flask app for testing"""
