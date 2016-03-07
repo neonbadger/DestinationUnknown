@@ -4,6 +4,8 @@
 
 As the saying goes -- “*Only the curious have something to find*” -- Destination Unknown will encourage you to embrace a bolder path.
 
+![[https://github.com/neonbadger/DestinationUnknown/blob/master/static/img/question_mark.png]]
+
 Destination Unknown is designed and developed with love by **Shijie Feng**. You can connect with Shijie on [LinkedIn](https://www.linkedin.com/in/shijiefeng), [Twitter](https://twitter.com/Neon_Badger), and [Medium](https://medium.com/@ShijieF).
 
 
