@@ -15,6 +15,8 @@ from twilio_api import convert_to_e164, send_uber_text
 # coverage run --source=. test.py
 # for report:
 # coverage report -m
+# for html:
+# coverage html
 
 
 # Doctest
