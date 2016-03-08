@@ -1,4 +1,4 @@
-![Destination Unknown Logo](/static/img/Question_Mark-3.png "Destination Unknown Logo")
+![Destination Unknown Logo](/static/img/question_mark_3.png "Destination Unknown Logo")
 
 **Destination Unknown** is a mischievous roulette mystery trip generator that can sweep you away on a spontaneous adventure. Users can log in with their Uber accounts, compose a story for their ideal escape, and see a top-rated mystery destination unfold on a story-book map. The destination contains just enough information to pique one’s interest but not spoil the surprise. Users can request a ride from Uber directly via Destination Unknown, complete with text message confirmation. Destination Unknown also provides users with insights into their own “Inside Out”: curiosity stats, mood triggers, and celebrity alter-egos. 
 
@@ -61,7 +61,7 @@ Upon a user's successful login through Uber, the app accesses the user's Uber pr
 
 ####Natural Language User Interface
 
-Destination Unknown experiments with a novel UI concept to transform the conventional Q&A-style forms for user input. The app implements a Natural Language Form ("NLF"), embedding input fields inside sentences to make filling out a form as engaging and as writing a mini story, and as easy as talking to a friend. In addition to asking for the user's current location, desired event type, and preferred destination, the form collects the user's feelings at the time of search by asking about the user's mood, self-description, and celebrity alter-ego. For more design inspirations on NLF, please visit this [blog post](http://www.jroehm.com/2014/01/ui-pattern-natural-language-form/).
+Destination Unknown experiments with a novel UI concept to transform the conventional Q&A-style forms for user input. The app implements a Natural Language Form ("NLF"), embedding input fields inside sentences to make filling out a form as engaging and as writing a mini story, and as easy as talking to a friend. In addition to asking for the user's current location, desired event type, and preferred destination, the form collects the user's feelings at the time of search by asking about the user's mood, self-description, and celebrity alter-ego. For more design inspirations on NLF, please visit this [blog](http://www.jroehm.com/2014/01/ui-pattern-natural-language-form/).
 ![](/static/img/NLP_Form_1.gif)
 
 ####Business Discovery
