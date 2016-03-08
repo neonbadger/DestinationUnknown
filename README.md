@@ -4,7 +4,7 @@
 
 As the saying goes, “*Only the curious have something to find*.” Destination Unknown will encourage you to forge a bolder path.
 
-Destination Unknown web app and logo are created with love by **Shijie Feng** shijie.feng@gmail.com. You can connect with Shijie on [LinkedIn](https://www.linkedin.com/in/shijiefeng), [Twitter](https://twitter.com/Neon_Badger), [Medium](https://medium.com/@ShijieF).
+Destination Unknown web app and logo are created with love by **Shijie Feng** <shijie.feng@gmail.com>. You can connect with Shijie on [LinkedIn](https://www.linkedin.com/in/shijiefeng), [Twitter](https://twitter.com/Neon_Badger), [Medium](https://medium.com/@ShijieF).
 
 
 # Table of Contents
@@ -50,7 +50,7 @@ When the mouse hovers to the center of the landing page, a hidden login button a
 User login is handled through Uber's OAuth 2.0, following the client-side authorization flow. 
 ![](/static/img/Login_2.gif)
 
-* What does Destination Uknown's OAuth flow look like?
+* _What does Destination Uknown's OAuth flow look like?_
 
 For a user to access Destination Unknown's content and request in-app Uber services, the app needs authorization from Uber and redirects the user to Uber's Authorization server, where the user is asked to authenticate (if not already logged in) and then authorize the requested permissions. After successfully being granted access, the app is redirected from Uber to the redirect uri address, including an access token that can be used directly by the app to request information or perform operations on behalf of the user. 
 
@@ -99,14 +99,17 @@ As the user fills out the form, all the form fields -- including the user's mood
 
 The app makes SQLAlchemy queries into the database and returns the following data: the number of times the user has been curious and searched for a destination (curiosity stats), the number of times the user has been bold and requested Uber (boldness stats), and how many miles the user has traveled to Destination Unknown with Uber (in sandbox). With jQuery, these stats are shown with a flipping countup animation effect.
 ![](/static/img/Stats_1.gif)
-In addition, the user can also view a donut chart illustrating the percentage of times the user selected his or her celebrity alter-egos, made with D3.js. The user can selects and deselects the alter-ego in the legend to view the relative percentages.
+
+The user can also view a donut chart illustrating the percentage of times the user selected his or her celebrity alter-egos, made with D3.js. The user can selects and deselects the alter-ego in the legend to view the relative percentages.
 ![](/static/img/Donut_1.gif)
-As a bonus, there is a chord diagram showing how the user's mood affects the activity choice, also made with D3.js. How does feeling anxious correspond to whether you eat out more or work out more? How does practicing zen relate to how you feel? Find out the answers! 
+ 
+In addition, there is a chord diagram showing how the user's mood affects the activity choice, also made with D3.js. How does feeling anxious correspond to whether you eat out more or work out more? How does practicing zen relate to how you feel? Find out the answers here!
+
 ![](/static/img/Chord_2.gif)
 
 ## <a name="install"></a>Installation
 
-If you want to get a copy of the project up and running on your local machine for development and testing purposes, follow the following steps.
+If you want to get a copy of this project up and running on your local machine for development and testing purposes, follow the following steps.
 
 ####Prerequisite
 
@@ -181,6 +184,7 @@ Add additional notes about how to deploy this on a live system
 
 ## <a name="future"></a>Version 2.0
 
+Future features to come:
 
 - [ ] Drag and drop the user's geolocation
 - [ ] User rate and review the Destination Unknown post Uber trip
@@ -194,7 +198,7 @@ Add additional notes about how to deploy this on a live system
 
 ## <a name="license"></a>License
 
-This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
+This project is licensed under the MIT License. See the [LICENSE.txt](LICENSE.txt) file for details.
 
 ## <a name="acknowledgments"></a>Acknowledgments
 
