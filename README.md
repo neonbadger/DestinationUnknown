@@ -1,4 +1,4 @@
-![Destination Unknown Logo](/static/img/question_mark_3.png "Destination Unknown Logo")
+![Destination Unknown Logo](/static/img/Question_Mark_3.png "Destination Unknown Logo")
 
 **Destination Unknown** is a mischievous roulette mystery trip generator that can sweep you away on a spontaneous adventure. Users can log in with their Uber accounts, compose a story for their ideal escape, and see a top-rated mystery destination unfold on a story-book map. The destination contains just enough information to pique one’s interest but not spoil the surprise. Users can request a ride from Uber directly via Destination Unknown, complete with text message confirmation. Destination Unknown also provides users with insights into their own “Inside Out”: curiosity stats, mood triggers, and celebrity alter-egos. 
 
@@ -75,7 +75,8 @@ The background map is composed of a Mapbox (built on Leaflet) map with custom ma
 
 ####Uber Ride Request (sandbox)
 
-A user can click "Call Uber" button and a modal window will appear. After confirming the ride request, the app sends an AJAX request to the Flask controller, sending along the geolocations of the user and the selected business. The app then uses the OAuth 2.0 credentials to instantiate a client object, makes a request to Uber's v1/requests endpoint that returns Uber products in the vincinity of the user, and picks a UberX (or UberXL if no UberX is available). The app makes a sandbox ride request to Uber, changing product status to "accepted." After Uber grants the ride request, Uber returns a successful 200 status code, and the app can access the ride details including the driver's name and rating, the vehicle's make and model, and the estimated pickup. The "Call Uber" button is disabled and turns into "Uber Called." For more, please visit [Uber Rides API tutorial](https://developer.uber.com/docs/tutorials-rides-api).
+A user can click "Call Uber" button and a modal window will appear. After confirming the ride request, the app sends an AJAX request to the Flask controller, sending along the geolocations of the user and the selected business. The app then uses the OAuth 2.0 credentials to instantiate a client object, makes a request to Uber's v1/requests endpoint that returns Uber products in the vincinity of the user, and picks a UberX (or UberXL if no UberX is available). The app makes a sandbox ride request to Uber, changing product status to "accepted." After Uber grants the ride request, Uber returns a successful 200 status code, and the app can access the ride details including the driver's name and rating, the vehicle's make and model, and the estimated pickup. The "Call Uber" button is disabled and turns into "Uber Called." For more, please visit [Uber API tutorial](https://developer.uber.com/docs/tutorials-rides-api).
+
 ![](/static/img/Call_Uber_2.gif)
 
 ####Twilio Text Message Confirmation
