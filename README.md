@@ -109,7 +109,7 @@ In addition, there is a chord diagram showing how the user's mood affects the ac
 
 ## <a name="install"></a>Installation
 
-If you want to get a copy of this project up and running on your local machine for development and testing purposes, follow the following steps.
+If you want to get a copy of this project up and running on your local machine for development and testing purposes, here are the steps.
 
 ####Prerequisite
 
@@ -124,12 +124,12 @@ Then, at the bottom of this file, add the following line (exactly):
 ``` export PATH=/Applications/Postgres.app/Contents/Versions/9.4/bin/:$PATH ``` 
 
 
-####Installing
+####Set up
 
 Clone this repository.
 
 ```
-$git clone https://github.com/neonbadger/DestinationUnknown.git
+$ git clone https://github.com/neonbadger/DestinationUnknown.git
 ```
 Create a virtual environment for the project.
 
