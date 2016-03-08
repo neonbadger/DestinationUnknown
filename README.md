@@ -146,9 +146,9 @@ $ pip install -r requirements.txt
 ```
 To enable the Uber, Yelp, and Twilio functionality, you should set up your own developer accounts and have your own sets of API keys and tokens. Examples of the config files are provided in the folder [config_example](config_example).
 
-Run PostgreSQL.
+Run PostgreSQL (see the elephant icon active).
 
-Create database with the name 'trips.'
+Create database with the name "trips" (do it once).
 ```
 $ psql trips
 
