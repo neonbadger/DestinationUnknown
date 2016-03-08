@@ -1,10 +1,8 @@
-# DESTINATION UNKNOWN
+![Destination Unknown Logo](/static/img/Question_Mark-3.png "Destination Unknown Logo")
 
 **Destination Unknown** is a mischievous roulette mystery trip generator that can sweep you away on a spontaneous adventure. Users can log in with their Uber accounts, compose a story for their ideal escape, and see a top-rated mystery destination unfold on a story-book map. The destination contains just enough information to pique one’s interest but not spoil the surprise. Users can request a ride from Uber directly via Destination Unknown, complete with text message confirmation. Destination Unknown also provides users with insights into their own “Inside Out”: curiosity stats, mood triggers, and celebrity alter-egos. 
 
 As the saying goes, “*Only the curious have something to find*.” Destination Unknown will encourage you to forge a bolder path.
-
-![Destination Unknown Logo](/static/img/question_mark.png "Destination Unknown Logo")
 
 Destination Unknown web app and logo are created with love by **Shijie Feng**. You can connect with Shijie on [LinkedIn](https://www.linkedin.com/in/shijiefeng), [Twitter](https://twitter.com/Neon_Badger), and [Medium](https://medium.com/@ShijieF).
 
@@ -36,6 +34,7 @@ Tech Stack:
 ## <a name="features"></a>Features
 
 ####Full-Screen Video Background
+![](/static/img/Landing_1.gif)
 
 The landing page embeds HTML5 video in the background for a stunning, fluid user experience. The video background is supported in all modern browsers (>IE8). For browsers incompatible with HTML5 video, a static full-screen picture is shown instead.
 
@@ -46,9 +45,10 @@ I create my own video for the app's background. To make the video background wor
 
 ####Login with Uber
 
-User hovers the mouse to the center and a hidden login button appears. I opt for a "hide-and-seek" button to augment the app's "Be Curious, Be Bold" message.
+When the mouse hovers to the center of the landing page, a hidden login button appears. I opt for a "hide-and-seek" button to augment the app's "*Be Curious, Be Bold*" message.
 
 User login is handled through Uber's OAuth 2.0, following the client-side authorization flow. 
+![](/static/img/Login_2.gif)
 
 * What does Destination Uknown's OAuth flow look like?
 
@@ -56,23 +56,27 @@ For a user to access Destination Unknown's content and request in-app Uber servi
 
 ####User Avatar
 
-Upon a user's successful login through Uber, the app accesses the user's Uber profile and displays it. With a mouseover, you can turn into a curious cat!
+Upon a user's successful login through Uber, the app accesses the user's Uber profile and displays it on the search page. With a mouseover, you can turn into a curious cat!
+![](/static/img/Avatar_1.gif)
 
 ####Natural Language User Interface
 
-Destination Unknown experiments with a novel UI concept called Natural Language UI to transform the conventional Q&A-type forms for user input. The app implements a Natural Language Form ("NLF"), embedding input fields inside sentences to make filling out a form as engaging and as writing a mini story, and as easy as talking to a friend. In addition to asking for the user's current location, desired event type, and preferred destination, the form collects the user's feelings at the time of search by asking about the user's mood, self-description, and celebrity alter-ego. For more design inspirations on NLF, please visit this [blog post](http://www.jroehm.com/2014/01/ui-pattern-natural-language-form/).
+Destination Unknown experiments with a novel UI concept to transform the conventional Q&A-style forms for user input. The app implements a Natural Language Form ("NLF"), embedding input fields inside sentences to make filling out a form as engaging and as writing a mini story, and as easy as talking to a friend. In addition to asking for the user's current location, desired event type, and preferred destination, the form collects the user's feelings at the time of search by asking about the user's mood, self-description, and celebrity alter-ego. For more design inspirations on NLF, please visit this [blog post](http://www.jroehm.com/2014/01/ui-pattern-natural-language-form/).
+![](/static/img/NLP_Form_1.gif)
 
 ####Business Discovery
 
 Destination Unknown uses the Yelp API behind the scene to determine the list of businesses to choose from. Once the user fills out the form and clicks the "Find Destination" button, the application sends the search parameters to Yelp API's search endpoint. After Yelp returns results that fit the search criteria, the app randomly selects one of the highest-rated businesses for the user's consideration, revealing only the business's Yelp ratings, review snippet, and business categories -- just enough information to get you curious and excited!
+![](/static/img/Destination_1.gif)
 
 ####Story Book Map
 
-The background map is built with the Mapbox API, rendered with a customized [picture book atlas theme](https://github.com/mapbox/mapbox-studio-picture-book.tm2) designed in Mapbox Studio. The map shows two custom-made markers: one for the user with a popup window greeting the user and indicating the user's current location, and the other for the mystery destination with a popup window containing the selected business information. The user has the option of returning to the previous search page, or requesting Uber to Destination Unknown.
+The background map is composed of a Mapbox (built on Leaflet) map with custom markers and popups, custom CSS, Bootstrap, and jQuery. The theme of the map is a customized [picture book atlas](https://github.com/mapbox/mapbox-studio-picture-book.tm2) designed in Mapbox Studio. The map shows two custom-made markers: one for the user with a popup window greeting the user and indicating the user's current location, and the other for the mystery destination with a popup window containing the selected business information. The user has the option of returning to the previous search page, or requesting Uber to Destination Unknown.
 
 ####Uber Ride Request (sandbox)
 
 A user can click "Call Uber" button and a modal window will appear. After confirming the ride request, the app sends an AJAX request to the Flask controller, sending along the geolocations of the user and the selected business. The app then uses the OAuth 2.0 credentials to instantiate a client object, makes a request to Uber's v1/requests endpoint that returns Uber products in the vincinity of the user, and picks a UberX (or UberXL if no UberX is available). The app makes a sandbox ride request to Uber, changing product status to "accepted." After Uber grants the ride request, Uber returns a successful 200 status code, and the app can access the ride details including the driver's name and rating, the vehicle's make and model, and the estimated pickup. The "Call Uber" button is disabled and turns into "Uber Called." For more, please visit [Uber Rides API tutorial](https://developer.uber.com/docs/tutorials-rides-api).
+![](/static/img/Call_Uber_2.gif)
 
 ####Twilio Text Message Confirmation
 
@@ -85,6 +89,9 @@ As the user fills out the form, all the form fields -- including the user's mood
 ####Curiosity and Mood Stats Visualization
 
 The app makes SQLAlchemy queries into the database and returns the following data: the number of times the user has been curious and searched for a destination (curiosity stats), the number of times the user has been bold and requested Uber (boldness stats), and how many miles the user has traveled to Destination Unknown with Uber (in sandbox). With jQuery, these stats are shown with a flipping countup animation effect. In addition, the user can also view a donut chart illustrating the percentage of times the user selected his or her celebrity alter-egos, and a chord diagram showing how the user's mood affects the activity choice on a chord diagram. Both interactive charts are made with D3.js.
+![](/static/img/Stats_1.gif)
+![](/static/img/Donut_1.gif)
+![](/static/img/Chord_2.gif)
 
 ## <a name="testing"></a>Testing
 
@@ -94,33 +101,51 @@ The application has been tested with Unittest, integration test, and selenium.
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-####Prerequisities
+####Prerequisite
 
-What things you need to install the software and how to install them
+Install PostgreSQL (Mac OSX)
 
-```
-Give examples
-```
+Use Sublime to edit the file in your home directory named .bash_profile:
+
+``` $ subl ~/.bash_profile ``` 
+
+Then, at the bottom of this file, add the following line (exactly):
+
+``` export PATH=/Applications/Postgres.app/Contents/Versions/9.4/bin/:$PATH ``` 
+
 
 ####Installing
 
-A step by step series of examples that tell you have to get a development env running
-
-Stay what the step will be
+Clone this repository.
 
 ```
-Give the example
+$git clone https://github.com/neonbadger/DestinationUnknown.git
+```
+Create a virtual environment for the project.
+
+```
+$ virtualenv env
+```
+Activate the virtual environment.
+```
+$ source env/bin/activate
+```
+Install dependencies.
+```
+$ pip install -r requirements.txt
+```
+To enable the Uber, Yelp, and Twilio functionality, you should have your own sets of API keys and tokens. Examples are provided in the folder [config_example](config_example).
+
+Run PostgreSQL.
+
+Create database with the name 'trips' and run model.py.
+```
+python -i model.py
 ```
 
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
 
 #### Configuration
+
 
 
 ## <a name="testing"></a>Testing
