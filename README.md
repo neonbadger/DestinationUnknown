@@ -167,20 +167,28 @@ $ python -i server.py
 
 ## <a name="testing"></a>Testing
 
-Currently there is a test suite encompassing Unittest, Integration Test, and Selenium Test.
+There is a test suite encompassing Unittest, Integration Test, and Selenium Test written for Destination Unknown. Currently the coverage is 67%. For details 
 
-To run the tests on command line:
+![](/static/img/coverage.png)
+
+To run the test suite on command line:
 ```
-$ coverage run tests.py
+$ coverage run --omit=env/* test.py
 ```
 For report:
 ```
-$ coverage report -m server.py
+$ coverage report -m
+```
+For html of the the report (which will create the htmlcov folder):
+```
+$ coverage html
+
+$ open htmlcov/index.html
 ```
 
 ## <a name="deployment"></a>Deployment
 
-Add additional notes about how to deploy this on a live system
+Deployment details to come!
 
 ## <a name="future"></a>Version 2.0
 
