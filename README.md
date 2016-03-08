@@ -4,7 +4,7 @@
 
 As the saying goes, “*Only the curious have something to find*.” Destination Unknown will encourage you to forge a bolder path.
 
-Destination Unknown web app and logo are created with love by **Shijie Feng** <shijie.feng@gmail.com>. You can connect with Shijie on [LinkedIn](https://www.linkedin.com/in/shijiefeng), [Twitter](https://twitter.com/Neon_Badger), [Medium](https://medium.com/@ShijieF).
+Destination Unknown web app and logo are created with love by **Shijie Feng** <<shijie.feng@gmail.com>>. You can connect with Shijie on [LinkedIn](https://www.linkedin.com/in/shijiefeng), [Twitter](https://twitter.com/Neon_Badger), [Medium](https://medium.com/@ShijieF).
 
 
 # Table of Contents
