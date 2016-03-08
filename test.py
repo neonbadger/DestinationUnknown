@@ -8,9 +8,16 @@ from model import db
 from model import User, Search, Rating
 from twilio_api import convert_to_e164, send_uber_text
 
+# to test:
+# python test.py
+# coverage:
+# coverage run --omit=env/* test.py
+# coverage run --source=. test.py
+# for report:
+# coverage report -m
+
 
 # Doctest
-
 def load_tests(loader, tests, ignore):
     """Run doctests and file-based doctests."""
 
@@ -18,8 +25,8 @@ def load_tests(loader, tests, ignore):
     return tests
 
 
-#Test Database
 
+#Test Database
 class ModelTests(unittest.TestCase):
     """Tests for database"""
 
@@ -91,7 +98,6 @@ class ModelTests(unittest.TestCase):
 
 
 # Test Twilio
-
 class TwilioUnitTestCase(unittest.TestCase):
     """Unit tests on Twilio SMS and phone number conversion"""
 
@@ -133,7 +139,6 @@ class TwilioUnitTestCase(unittest.TestCase):
 
 
 #Test Flask
-
 class FlaskTests(unittest.TestCase):
     """Integration tests on Flask server"""
 
@@ -151,21 +156,20 @@ class FlaskTests(unittest.TestCase):
         self.assertIn('text/html', result.headers['Content-Type'])
         self.assertIn("<span class='special'>Find Your Destination Unknown</span>", result.data)
 
-    # def test_demo(self):
+    def test_demo(self):
 
-    #     result = self.client.get('/demo')
-    #     self.assertEqual(result.status_code, 200)
-    #     self.assertIn('text/html', result.headers['Content-Type'])
+        result = self.client.get('/demo')
+        self.assertEqual(result.status_code, 200)
+        self.assertIn('text/html', result.headers['Content-Type'])
 
-    # def test_stats(self):
+    def test_stats(self):
 
-    #     result = self.client.get('/show_stats')
-    #     self.assertEqual(result.status_code, 200)
-    #     self.assertIn('View Your Stats', result.data)
+        result = self.client.get('/show_stats')
+        self.assertEqual(result.status_code, 200)
+        self.assertIn('View Your Stats', result.data)
 
 
 # Selenium Test
-
 from selenium import webdriver
 from time import sleep
 
