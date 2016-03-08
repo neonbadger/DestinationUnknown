@@ -31,12 +31,13 @@ Tech Stack:
 * Database: [Flask - SQLAlchemy](http://flask.pocoo.org/), [PostgreSQL](http://www.postgresql.org/)
 * API: [Uber](https://developer.uber.com/), [Yelp](https://www.yelp.com/developers/documentation/v2/overview), [Mapbox](https://www.mapbox.com/developers/), [Twilio](https://www.twilio.com/docs/api/rest)
 
+(Dependencies are listed in [requirements.txt](requirements.txt).)
 
 ## <a name="features"></a>Features
 
 ####Full-Screen Video Background
 
-The landing page embeds HTML5 video in the background for a stunning user experience. The video background is supported in all modern browsers (>IE8). For browsers incompatible with HTML5 video, a static full-screen picture is shown instead.
+The landing page embeds HTML5 video in the background for a stunning, fluid user experience. The video background is supported in all modern browsers (>IE8). For browsers incompatible with HTML5 video, a static full-screen picture is shown instead.
 
 I create my own video for the app's background. To make the video background work on the web, I host three formats:
 * MP4 – a container for H.264 video and AAC audio
@@ -45,7 +46,7 @@ I create my own video for the app's background. To make the video background wor
 
 ####Login with Uber
 
-User hovers the mouse to the center and a hidden login button appears. I choose this "hide-and-seek" effect to augment the app's "Be Curious, Be Bold" message.
+User hovers the mouse to the center and a hidden login button appears. I opt for a "hide-and-seek" button to augment the app's "Be Curious, Be Bold" message.
 
 User login is handled through Uber's OAuth 2.0, following the client-side authorization flow. 
 
@@ -59,7 +60,7 @@ Upon a user's successful login through Uber, the app accesses the user's Uber pr
 
 ####Natural Language User Interface
 
-I experimented with a novel UI concept and implemented a Natural Language Form ("NLF"), embedding input fields inside sentences to make filling out a form as engaging as writing a mini story. In addition to asking for the user's current location, desired event type, and preferred destination for business discovery, the form collects the user's feelings at the time of search by asking about the user's mood, self-description, and celebrity alter-ego. For more design inspirations on NLF, please visit this [blog post](http://www.jroehm.com/2014/01/ui-pattern-natural-language-form/). 
+Destination Unknown experiments with a novel UI concept called Natural Language UI to transform the conventional Q&A-type forms for user input. The app implements a Natural Language Form ("NLF"), embedding input fields inside sentences to make filling out a form as engaging and as writing a mini story, and as easy as talking to a friend. In addition to asking for the user's current location, desired event type, and preferred destination, the form collects the user's feelings at the time of search by asking about the user's mood, self-description, and celebrity alter-ego. For more design inspirations on NLF, please visit this [blog post](http://www.jroehm.com/2014/01/ui-pattern-natural-language-form/).
 
 ####Business Discovery
 
@@ -87,8 +88,7 @@ The app makes SQLAlchemy queries into the database and returns the following dat
 
 ## <a name="testing"></a>Testing
 
-The application has been tested with Unittest, integration test, and selenium. 
-
+The application has been tested with Unittest, integration test, and selenium.
 
 ## <a name="setup"></a>Set Up
 
