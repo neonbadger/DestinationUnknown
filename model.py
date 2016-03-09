@@ -1,4 +1,4 @@
-"""Models and database functions for Destination Unknown."""
+"""Models and database functions for Destination Unknown"""
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import desc
