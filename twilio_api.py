@@ -1,4 +1,4 @@
-"""Twilio API set up and text messaging"""
+"""Twilio API setup and text messaging"""
 
 import io
 import json
