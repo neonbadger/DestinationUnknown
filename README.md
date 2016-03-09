@@ -169,7 +169,7 @@ $ python -i server.py
 
 There is a test suite encompassing Unittest, Integration Test, and Selenium Test written for Destination Unknown. Currently the coverage is 67%. For details 
 
-![](/static/img/coverage.png)
+![](/static/img/coverage1.png)
 
 To run the test suite on command line:
 ```
