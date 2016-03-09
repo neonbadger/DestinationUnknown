@@ -10,7 +10,7 @@ Destination Unknown web app and logo are created with love by **Shijie Feng** <<
 # Table of Contents
 * [Technologies](#technologies)
 * [Features](#features)
-* [Intallation](#install)
+* [Installation](#install)
 * [Testing & Coverage](#testing)
 * [Deployment](#deployment)
 * [Version 2.0](#future)
@@ -169,7 +169,7 @@ $ python -i server.py
 
 There is a test suite encompassing Unittest, Integration Test, and Selenium Test written for Destination Unknown. 
 
-Currently the coverage is 67%.  
+Currently the coverage is 67%. For details, please visit the folder [htmlcov](htmlcov/index.html). 
 
 ![](/static/img/coverage1.png)
 
