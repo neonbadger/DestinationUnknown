@@ -169,9 +169,11 @@ $ python -i server.py
 
 There is a test suite encompassing Unittest, Integration Test, and Selenium Test written for Destination Unknown. 
 
-Currently the coverage is 67%. For details, please visit the folder [htmlcov](htmlcov/index.html). 
+Currently the coverage is 67%.
 
 ![](/static/img/coverage1.png)
+
+For details, please open the folder [htmlcov](htmlcov) in your browser.
 
 To run the test suite on command line:
 ```
