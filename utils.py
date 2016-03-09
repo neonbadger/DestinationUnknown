@@ -1,3 +1,5 @@
+"""Utilities from Uber to store OAuth 2.0 credentials in config.yaml"""
+
 # Copyright (c) 2015 Uber Technologies, Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
