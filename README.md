@@ -11,7 +11,7 @@ Destination Unknown web app and logo are created with love by **Shijie Feng** <<
 * [Technologies](#technologies)
 * [Features](#features)
 * [Intallation](#install)
-* [Testing](#testing)
+* [Testing & Coverage](#testing)
 * [Deployment](#deployment)
 * [Version 2.0](#future)
 * [Author](#author)
@@ -167,7 +167,9 @@ $ python -i server.py
 
 ## <a name="testing"></a>Testing
 
-There is a test suite encompassing Unittest, Integration Test, and Selenium Test written for Destination Unknown. Currently the coverage is 67%. For details 
+There is a test suite encompassing Unittest, Integration Test, and Selenium Test written for Destination Unknown. 
+
+Currently the coverage is 67%.  
 
 ![](/static/img/coverage1.png)
 
@@ -179,7 +181,7 @@ For report:
 ```
 $ coverage report -m
 ```
-For html of the the report (which will create the htmlcov folder):
+For html of the the report (which will create a htmlcov folder):
 ```
 $ coverage html
 
@@ -202,7 +204,7 @@ Future features to come:
 
 ## <a name="author"></a>Author
 
-**Shijie Feng** (Github: [neonbadger](https://github.com/neonbadger)) is a software engineer and lives in San Francisco Bay Area with her husband Blake and cat Mylo.
+**Shijie Feng** (Github: [neonbadger](https://github.com/neonbadger)) is a software engineer and lives in the San Francisco Bay Area with her husband Blake and cat Mylo.
 
 ## <a name="license"></a>License
 

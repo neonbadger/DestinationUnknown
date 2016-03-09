@@ -1,3 +1,5 @@
+"""Destination Unknown"""
+
 from flask import Flask
 from flask import session as sesh
 from flask import redirect
@@ -51,7 +53,7 @@ auth_url = auth_flow.get_authorization_url()
 
 @app.route('/')
 def index():
-    """Show homepage."""
+    """Homepage."""
 
     return render_template('home.html')
 
@@ -68,7 +70,7 @@ def login():
 @app.route('/redirect-uri', methods=['GET'])
 def redirect_uri():
     """Step 2 & 3 in 3-legged Oauth handshake. Implement callback 
-    at redirect_uri to exchange a code to obtain access token"""
+    at redirect_uri to exchange a code to obtain access token."""
 
     parameters = {
         'redirect_uri': 'http://localhost:5000/redirect-uri',
@@ -98,7 +100,7 @@ def redirect_uri():
 
 @app.route('/search')
 def search():
-    """Show search form and create user object if not in database"""
+    """Show search form and create user object if not in database."""
     
     if 'access_token' not in sesh:
         return redirect(url_for('index'))
@@ -130,8 +132,6 @@ def search():
                         'img_url': user_profile.get('picture')
         }
 
-        # print sesh['user']
-
         if db.session.query(User).filter(User.email == user_profile['email']).count() == 0:
             user = User(first_name=user_profile.get('first_name'),
                         last_name= user_profile.get('last_name'),
@@ -150,7 +150,7 @@ def search():
 
 @app.route('/yelp_result', methods = ['POST'])
 def generate_yelp():
-    """Return top-rated Yelp search result and create search object in database"""
+    """Return top-rated Yelp search result and create search object in database."""
 
     mood = request.form.get('mood')
     adjective = request.form.get('adjective')
@@ -267,7 +267,7 @@ def request_uber():
 
 @app.route('/show_stats')
 def show_stats():
-    """Show user's boldness stats and D3 graphs"""
+    """Show user's curiosity stats and D3 graphs."""
 
     if 'access_token' not in sesh:
         return redirect(url_for('index'))
@@ -279,8 +279,6 @@ def show_stats():
         moods = db.session.query(func.count(Search.mood), Search.mood).group_by(Search.mood).all()
         alter_ego = db.session.query(func.count(Search.alter_ego), Search.alter_ego).group_by(Search.alter_ego).all()
 
-        # print moods, alter_ego
-
         return render_template("stats.html", 
                                 bold_stat=bold_stat,
                                 curious_stat=curious_stat,
@@ -291,7 +289,7 @@ def show_stats():
 @app.route('/check_token', methods=['GET'])
 def check_access_token():
     """A test route that checks whether access token is fresh."""
-   
+
     token = sesh['access_token']
 
     return render_template('check_token.html', token=token)
