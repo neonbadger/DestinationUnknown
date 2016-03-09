@@ -1,3 +1,5 @@
+"""Yelp API setup and random business selection function"""
+
 import io
 import json
 import random
@@ -31,7 +33,7 @@ eat_activity = ['wineries', 'farmersmarket', 'cafes', 'bakeries', 'bubbletea', '
                 'asianfusion', 'japanese', 'seafood', 'breweries']
 
 def yelp_random_pick(event, city):
-    """Generates top pick for users."""
+    """Generate a top business pick for user."""
 
     if event == 'food':
         category_filter = random.choice(eat_activity)
