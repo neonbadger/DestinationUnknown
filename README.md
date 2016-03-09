@@ -4,7 +4,7 @@
 
 As the saying goes, “*Only the curious have something to find*.” Destination Unknown will encourage you to forge a bolder path.
 
-Destination Unknown web app and logo are created with love by **Shijie Feng** <<shijie.feng@gmail.com>>. You can connect with Shijie on [LinkedIn](https://www.linkedin.com/in/shijiefeng), [Twitter](https://twitter.com/Neon_Badger), [Medium](https://medium.com/@ShijieF).
+Destination Unknown web app and logo are created with love by **Shijie Feng** <<shijie.feng@gmail.com>>. You can connect with Shijie on [LinkedIn](https://www.linkedin.com/in/shijiefeng), [Twitter](https://twitter.com/Neon_Badger), and [Medium](https://medium.com/@ShijieF).
 
 
 # Table of Contents
@@ -77,7 +77,7 @@ Destination Unknown uses the Yelp API behind the scene to determine the list of 
 
 The background map is composed of a Mapbox (built on Leaflet) map with custom markers and popups, custom CSS, Bootstrap, and jQuery. The theme of the map is a customized [picture book atlas](https://github.com/mapbox/mapbox-studio-picture-book.tm2) designed in Mapbox Studio. 
 
-The map has a transparent nav bar overlay on top, displaying the user's phone number, current location, and a link to view the user's stats. The map shows two custom-made markers: one for the user with a popup window greeting the user and indicating the user's current location, and the other for the mystery destination with a popup window containing the selected business information
+The map has a transparent nav bar overlay on top, displaying the user's phone number, current location, and a link to view the user's stats. The map shows two custom-made markers: one for the user with a popup window greeting the user and indicating the user's current location, and the other for the mystery destination with a popup window containing the selected business information.
 
 The user has the option of returning to the previous search page, or requesting Uber to Destination Unknown. 
 
@@ -100,10 +100,10 @@ As the user fills out the form, all the form fields -- including the user's mood
 The app makes SQLAlchemy queries into the database and returns the following data: the number of times the user has been curious and searched for a destination (curiosity stats), the number of times the user has been bold and requested Uber (boldness stats), and how many miles the user has traveled to Destination Unknown with Uber (in sandbox). With jQuery, these stats are shown with a flipping countup animation effect.
 ![](/static/img/Stats_1.gif)
 
-The user can also view a donut chart illustrating the percentage of times the user selected his or her celebrity alter-egos, made with D3.js. The user can selects and deselects the alter-ego in the legend to view the relative percentages.
+The user can also view a donut chart illustrating the percentage of times the user selected his or her celebrity alter-egos, made with D3.js. The user can select and deselect the alter-ego in the legend to view the relative percentages.
 ![](/static/img/Donut_1.gif)
  
-In addition, there is a chord diagram showing how the user's mood affects the activity choice, also made with D3.js. How does feeling anxious correspond to whether you eat out more or work out more? How does practicing zen relate to how you feel? Find out the answers here!
+In addition, there is a chord diagram showing how the user's mood affects the activity choice, also made with D3.js. How does feeling anxious correspond to whether you want to eat out or work out? How does practicing zen relate to how you feel? Find out the answers here!
 
 ![](/static/img/Chord_2.gif)
 
