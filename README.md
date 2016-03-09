@@ -173,8 +173,6 @@ Currently the coverage is 67%.
 
 ![](/static/img/coverage1.png)
 
-For individual reports, please view the html files in the folder [htmlcov](htmlcov) in your browser.
-
 To run the test suite on command line:
 ```
 $ coverage run --omit=env/* test.py
