@@ -1,4 +1,4 @@
-"""Destination Unknown"""
+"""Flask server for Destination Unknown"""
 
 from flask import Flask
 from flask import session as sesh
