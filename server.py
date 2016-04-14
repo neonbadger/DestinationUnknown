@@ -17,8 +17,11 @@ from utils import import_oauth2_credentials
 from yelp_api import yelp_random_pick
 from twilio_api import send_uber_text
 
-from geopy.geocoders import Nominatim
-from geopy.distance import vincenty
+# import geopy 
+# from geopy.geocoders import Nominatim
+# from geopy.distance import vincenty
+
+import geocoder
 
 from model import connect_to_db, db, User, Search
 from sqlalchemy import func
@@ -32,7 +35,8 @@ app.requests_session = requests.Session()
 app.secret_key = os.urandom(24)
 
 
-geolocator = Nominatim()
+# geolocator = Nominatim()
+# geolocator = geopy.geocoders.GoogleV3()
 
 
 # Step 1 in 3-legged OAuth handshake:
@@ -157,9 +161,14 @@ def generate_yelp():
     alter_ego = request.form.get('alter_ego')
 
     location = request.form.get('location')
-    start = geolocator.geocode(request.form.get('location'))
-    start_lat = start.latitude
-    start_lng = start.longitude
+    
+
+    # start = geolocator.geocode(request.form.get('location'))
+    # start_lat = start.latitude
+    # start_lng = start.longitude
+
+    g = geocoder.google(request.form.get('location'))
+    start_lat, start_lng = g.latlng
 
     event = request.form.get('event')
     city = request.form.get('city')
@@ -169,7 +178,9 @@ def generate_yelp():
     end_lat = biz.location.coordinate.latitude
     end_lng = biz.location.coordinate.longitude
 
-    distance = vincenty((start_lat, start_lng), (end_lat, end_lng)).miles
+    # distance = vincenty((start_lat, start_lng), (end_lat, end_lng)).miles
+
+    distance = 10
 
     sesh['user']['phone'] = phone
     user = User.query.filter(User.email == sesh['user'].get('email')).first()
@@ -298,7 +309,7 @@ def check_access_token():
 
 if __name__ == "__main__":
 
-    app.debug = False
+    app.debug = True
 
     connect_to_db(app)
 
